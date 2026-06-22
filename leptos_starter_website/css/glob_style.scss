@@ -1,0 +1,112 @@
+$base: 2;
+$steps: 8;
+
+:root {
+    --distance-1: #{$base}px;
+    --distance-2: #{$base * 2}px;
+    --distance-3: #{$base * 4}px;
+    --distance-4: #{$base * 8}px;
+    --distance-5: #{$base * 16}px;
+    --distance-6: #{$base * 32}px;
+    --distance-7: #{$base * 64}px;
+    --distance-8: #{$base * 128}px;
+
+    --color1: #dcdcdd;
+    --color2: #c5c3c6;
+    --color3: #46494c;
+    --color4: #4c5c68;
+    --color5: #1985a1;
+
+    --color1-dark1: #c8c8c9;
+    --color1-dark2: #b0b0b1;
+    --color1-dark3: #848485;
+    --color1-light1: #e8e8e9;
+    --color1-light2: #f0f0f1;
+    --color1-light3: #fafafa;
+
+    --color2-dark1: #b0aeb1;
+    --color2-dark2: #99989b;
+    --color2-dark3: #6d6c70;
+    --color2-light1: #d4d2d5;
+    --color2-light2: #e8e7e9;
+    --color2-light3: #f5f5f6;
+
+    --color3-dark1: #2a2c2e;
+    --color3-dark2: #1a1b1d;
+    --color3-dark3: #0a0a0b;
+    --color3-light1: #626569;
+    --color3-light2: #7e8185;
+    --color3-light3: #9a9da1;
+
+    --color4-dark1: #2e3840;
+    --color4-dark2: #1c2228;
+    --color4-dark3: #0a0c10;
+    --color4-light1: #6a7a88;
+    --color4-light2: #8898a8;
+    --color4-light3: #a6b6c8;
+
+    --color5-dark1: #126176;
+    --color5-dark2: #0b3d4b;
+    --color5-dark3: #041920;
+    --color5-light1: #20a9cc;
+    --color5-light2: #3dc0e2;
+    --color5-light3: #6bd2ec;
+
+    --content-body-width: 720px;
+    --border-radius-1: 5px;
+
+    --font-body: "Google Sans", sans-serif;
+    --font-heading: "Montserrat", sans-serif;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url("/fonts/montserrat-v31-latin-regular.woff2") format("woff2");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Google Sans";
+    src: url("/fonts/google-sans-v69-latin-regular.woff2") format("woff2");
+    font-weight: 400;
+}
+
+// Soft Lavender
+// https://coolors.co/palette/22223b-4a4e69-9a8c98-c9ada7-f2e9e4
+
+// Industrial blue <- current
+// https://coolors.co/palette/dcdcdd-c5c3c6-46494c-4c5c68-1985a1
+
+.dot-background {
+    background-color: var(--color1);
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+}
+
+.content-body {
+    width: var(--content-body-width);
+    margin: 0px;
+    border: 1px black solid;
+    border-radius: var(--border-radius-1);
+    background-color: var(--color1);
+}
+
+.title {
+    margin: 0px;
+    font-family: var(--font-heading);
+}
+
+body {
+    padding: var(--distance-1);
+    font-family: var(--font-body);
+}
+
+.happy_dot_on_the_grid {
+    width: 50px;
+    height: 50px;
+    border: 1px blueviolet solid;
+    text-align: center;
+    color: var(--color1-dark5);
+    opacity: 50%;
+}

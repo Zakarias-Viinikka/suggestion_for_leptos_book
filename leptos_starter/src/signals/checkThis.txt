@@ -1,0 +1,8 @@
+if let Some(document) = document() {
+    let input = document.get_element_by_id("my-input").unwrap();
+    let button = document.get_element_by_id("my-button").unwrap();
+    // add event listeners, manipulate DOM, etc.
+}
+
+
+u can do similar stuff to js documentget stuff. it solves similar things as noderef does.

@@ -1,0 +1,12 @@
+.default-container {
+    border: 5px skyblue solid;
+    padding: 5px;
+}
+
+body {
+    display: flex;
+    justify-content: center; /* horizontal centering */
+    align-items: center; /* vertical centering */
+    min-height: 100vh; /* full viewport height */
+    margin: 0; /* remove default margin */
+}

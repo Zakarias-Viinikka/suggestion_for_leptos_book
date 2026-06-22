@@ -1,0 +1,14 @@
+.default-container {
+  border: 5px skyblue solid;
+  padding: 5px;
+}
+
+body {
+  display: flex;
+  justify-content: center; /* horizontal centering */
+  align-items: center; /* vertical centering */
+  min-height: 100vh; /* full viewport height */
+  margin: 0; /* remove default margin */
+}
+
+/*# sourceMappingURL=data:application/json;charset=utf-8,%7B%22version%22:3,%22sourceRoot%22:%22%22,%22sources%22:%5B%22../../css/global.scss%22%5D,%22names%22:%5B%5D,%22mappings%22:%22AAAA;EACI;EACA;;;AAGJ;EACI;EACA;EACA;EACA;EACA%22,%22file%22:%22global.css%22%7D */

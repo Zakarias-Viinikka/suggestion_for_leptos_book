@@ -3,9 +3,7 @@ use leptos_router::components::A; // for making <A> work
 use leptos_router::components::{Route, Router, Routes};
 use leptos_router::path; // for the path!() macro
 
-mod page1_and_page2;
-use page1_and_page2::page1::Page1;
-use page1_and_page2::page2;
+use leptos_starter::page1_and_page2::{page1::Page1, page2};
 
 fn main() {
     console_error_panic_hook::set_once();
@@ -22,8 +20,8 @@ fn App() -> impl IntoView {
         <main>
             <Routes fallback=|| "Not found.">
                 <Route path=path!("/") view=DefaultPage/>
-                <Route path=path!("/page1") view=Page1/>
-                <Route path=path!("/page2") view=page2::Page2/>
+                <Route path=path!("/page1") view=Page1/>        //<- both work
+                <Route path=path!("/page2") view=page2::Page2/> //<- both work
             </Routes>
         </main>
       </Router>

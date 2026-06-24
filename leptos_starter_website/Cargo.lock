@@ -891,6 +891,7 @@ dependencies = [
  "leptos",
  "leptos_router",
  "ndarray",
+ "web-sys",
 ]
 
 [[package]]

@@ -1,0 +1,13 @@
+<ForEnumerate
+            each=move || syncing_text.get()
+            key= |letter| *letter
+            children=move |index, letter| {
+                let mut n_counter = 0u8;
+                //here
+                view! {
+                    <div id=get_letter_id(letter, &mut  n_counter) class="letterInDiv">
+                        {letter}
+                    </div>
+                }
+            }
+        />

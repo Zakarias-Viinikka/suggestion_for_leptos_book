@@ -77,13 +77,6 @@ $steps: 8;
 // Industrial blue <- current
 // https://coolors.co/palette/dcdcdd-c5c3c6-46494c-4c5c68-1985a1
 
-.dot-background {
-    background-color: var(--color1);
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-}
-
 .content-body {
     width: var(--content-body-width);
     margin: 0px;
@@ -102,11 +95,18 @@ body {
     font-family: var(--font-body);
 }
 
+.dot-background {
+    background-color: var(--color3);
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+}
+
 .happy_dot_on_the_grid {
     width: 50px;
     height: 50px;
     border: 1px blueviolet solid;
     text-align: center;
-    color: var(--color1-dark5);
+    color: var(--color3-dark1);
     opacity: 50%;
 }

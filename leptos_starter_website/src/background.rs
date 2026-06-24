@@ -11,6 +11,23 @@ pub fn Background() -> impl IntoView {
         grid_settings.dimensions.1,
     ));
     let (dots, dots_set) = signal(grid);
+    /*
+     *
+     *
+     *
+     *
+     * Note for myself
+     *
+     * Consider writing the animation logic in pure js. there isn't really a need to do it in rust. that's assuming leptos and vanilla js will co operate. i can generate the grid in rust, but the actual animating and stuff isn't necessary I think.
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     */
     view! {
         <div class="dot-background">
         <table>

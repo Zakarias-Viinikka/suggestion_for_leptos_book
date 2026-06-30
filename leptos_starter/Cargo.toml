@@ -2,6 +2,7 @@
 name = "leptos_starter"
 version = "0.1.0"
 edition = "2024"
+# default-run = "basic_routing" instead of this edit the index.html
 
 
 [dependencies]
@@ -17,3 +18,7 @@ path = "src/routing/folder_routing/main.rs"
 [[bin]]
 name = "memo"
 path = "src/signals/memo/main.rs"
+
+[[bin]]
+name = "basic_routing"
+path = "src/routing/basic_routing/main.rs"

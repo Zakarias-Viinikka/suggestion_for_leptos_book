@@ -1,9 +1,11 @@
-.default-container {
+.container {
     border: 5px skyblue solid;
     padding: 5px;
 }
 
 body {
+    border: 5px orangered solid;
+
     display: flex;
     justify-content: center; /* horizontal centering */
     align-items: center; /* vertical centering */

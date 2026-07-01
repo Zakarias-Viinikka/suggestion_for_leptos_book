@@ -1,10 +1,11 @@
 <!doctype html>
 <html>
-    <link rel="stylesheet" href="/global-74823accd91dee2e.css" integrity="sha384-Qbj8OLilVFcC1m0zuKKuKdvRfEwUZ6YLSA0dCxy0E8Gu1FgABiG5jdkRRGbSGZxa"/>
-    
+    <head>
+        <link rel="stylesheet" href="/global-74823accd91dee2e.css" integrity="sha384-Qbj8OLilVFcC1m0zuKKuKdvRfEwUZ6YLSA0dCxy0E8Gu1FgABiG5jdkRRGbSGZxa"/>
+        
 <script type="module">
-import init, * as bindings from '/optional_signals-7320fa559b888ecd.js';
-const wasm = await init({ module_or_path: '/optional_signals-7320fa559b888ecd_bg.wasm' });
+import init, * as bindings from '/calling_rust_from_js-4c86d670071b9249.js';
+const wasm = await init({ module_or_path: '/calling_rust_from_js-4c86d670071b9249_bg.wasm' });
 
 
 window.wasmBindings = bindings;
@@ -13,7 +14,11 @@ window.wasmBindings = bindings;
 dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
 
 </script>
-    <head><link rel="modulepreload" href="/optional_signals-7320fa559b888ecd.js" crossorigin="anonymous" integrity="sha384-WuxB9ONpOEpA7iKttvqW7NNQFuzbDc4FIX5ttjGh0ugkWXFDESvUeh/GsEPgVoim"><link rel="preload" href="/optional_signals-7320fa559b888ecd_bg.wasm" crossorigin="anonymous" integrity="sha384-sb87Blw9jDiNa0N0rVySvHWZ+gU0ZRPVLa9avh5+wXg0jEijQVmN6bxUcHedNUYk" as="fetch" type="application/wasm"></head>
+        <script>function js_func() {
+  return "hello from js";
+}
+</script>
+    <link rel="modulepreload" href="/calling_rust_from_js-4c86d670071b9249.js" crossorigin="anonymous" integrity="sha384-YXmJAVfyHd0EQa0N9uJrly/i32dQ1siMOuGi9DMhKvY8LHZytGuS4Av2YV97ScS1"><link rel="preload" href="/calling_rust_from_js-4c86d670071b9249_bg.wasm" crossorigin="anonymous" integrity="sha384-LniZpiVV2kOFi+P8xifzpwi5bVl6CZxdXbA9KDvnZdhld1wIHAtzAWuE9NXn6P/N" as="fetch" type="application/wasm"></head>
     <body><script>"use strict";
 
 (function () {

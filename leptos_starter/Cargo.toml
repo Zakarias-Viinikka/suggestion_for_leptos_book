@@ -9,6 +9,7 @@ edition = "2024"
 console_error_panic_hook = "0.1.7"
 leptos = { version = "0.8.19", features = ["csr"] }
 leptos_router = "0.8.13"
+wasm-bindgen = "0.2.126"
 
 [[bin]]
 name = "basic_routing"
@@ -29,3 +30,7 @@ path = "src/routing/r4_optional_signals/main.rs"
 [[bin]]
 name = "memo"
 path = "src/signals/memo/main.rs"
+
+[[bin]]
+name = "calling_rust_from_js"
+path = "src/rust_js/calling_rust_from_js/main.rs"

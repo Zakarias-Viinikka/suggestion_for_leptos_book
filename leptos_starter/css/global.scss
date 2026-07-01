@@ -1,10 +1,13 @@
 .container {
     border: 5px skyblue solid;
     padding: 5px;
+    margin: 2px;
 }
 
 body {
     border: 5px orangered solid;
+
+    font-size: 30px;
 
     display: flex;
     justify-content: center; /* horizontal centering */

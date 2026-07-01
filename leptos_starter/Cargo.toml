@@ -11,14 +11,21 @@ leptos = { version = "0.8.19", features = ["csr"] }
 leptos_router = "0.8.13"
 
 [[bin]]
-name = "folder_routing"
-path = "src/routing/folder_routing/main.rs"
+name = "basic_routing"
+path = "src/routing/r1_basic_routing/main.rs"
 
+[[bin]]
+name = "folder_routing"
+path = "src/routing/r2_folder_routing/main.rs"
+
+[[bin]]
+name = "routing_with_signals"
+path = "src/routing/r3_routing_w_signals/main.rs"
+
+[[bin]]
+name = "optional_signals"
+path = "src/routing/r4_optional_signals/main.rs"
 
 [[bin]]
 name = "memo"
 path = "src/signals/memo/main.rs"
-
-[[bin]]
-name = "basic_routing"
-path = "src/routing/basic_routing/main.rs"

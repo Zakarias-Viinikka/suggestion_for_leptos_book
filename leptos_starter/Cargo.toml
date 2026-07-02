@@ -41,3 +41,9 @@ path = "src/rust_js/calling_rust_from_js/main.rs"
 [[bin]]
 name = "enumerate_basic"
 path = "src/for_enumerate/basic_example/main.rs"
+
+
+
+[[bin]]
+name = "list_of_reactive_components"
+path = "src/for_enumerate/list_of_reactive_components/main.rs"

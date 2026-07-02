@@ -30,6 +30,11 @@ fn App() -> impl IntoView {
                 key=|fruit| fruit.id // fruit is the equivalent of 'for fruit in list'
                 let(index, fruit) // index is fruit.id and fruit is fruit
             >
+                //if you don't put anything here the entire view! gets underlined with red, so if you're debugging to make stuff work just put something like:
+                // enumerate stuff...>
+                // "hello"
+                // </forEnumerate>
+
                 //view! { // with the let syntax view! isn't needed
                 <button on:click=move |_| {
                     fruit.name.set(get_random_fruit());

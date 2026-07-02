@@ -1,7 +1,7 @@
 use leptos::html;
 use leptos::prelude::*;
 //use leptos::tachys::reactive_graph::bind::GetValue;
-use leptos_router::components::A; // for making <A> work
+//use leptos_router::components::A; // for making <A> work
 use leptos_router::components::{Route, Router, Routes};
 use leptos_router::path; // for the path!() macro
 
@@ -28,10 +28,10 @@ fn App() -> impl IntoView {
 
 #[component]
 fn DefaultPage() -> impl IntoView {
-    let (data, data_set) = signal("Example Data".to_string());
+    let (data, _ /*data_set*/) = signal("Example Data".to_string());
 
     let input_ref: NodeRef<html::Input> = NodeRef::new();
-    let display_ref: NodeRef<html::Div> = NodeRef::new();
+    //let display_ref: NodeRef<html::Div> = NodeRef::new(); //unused warning
     view! {
         <table>
             <tr>

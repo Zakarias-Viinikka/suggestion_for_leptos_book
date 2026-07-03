@@ -1,5 +1,9 @@
-use leptos::logging::log;
+use leptos::logging::log; //logging
 use leptos::prelude::*;
+use leptos_use::UseTextareaAutosizeReturn; //text area
+use leptos_use::use_textarea_autosize; // text area
+
+//use leptos::html::Textarea; //for using type NodeRef::textarea outside of component
 /*for the drag reorder visuals */
 /*
  * https://rust-ui.com/docs/components/drag-and-drop
@@ -33,18 +37,17 @@ impl TextBlocks {
 
 #[component]
 fn App() -> impl IntoView {
-    //static LIST: OnceLock<RwSignal<Vec<TextBlocks>>> = OnceLock::new();
     let mut list: Vec<TextBlocks> = Vec::new();
-    make_text_blocks(&mut list);
+
+    //make text blocks
+    for _ in 0..5 {
+        list.push(TextBlocks::new(list.len()));
+    }
+    //make text blocks
 
     let (list, list_set) = signal(list);
     view! {
         <div class="finale-container">
-        /*
-
-        <ul id="sortable-container">
-
-         */
          <Draggable>
              <DraggableZone>
                  <ForEnumerate
@@ -55,14 +58,10 @@ fn App() -> impl IntoView {
                      <DraggableItem /* ... */ >
                          <div class="drag-handle">"⠿"</div>
                          <div class="text-input-container">
-                             <input
-                                 id=index
-                                 type="text"
-                                 value=text_blocks.text.get()
-                                 on:input:target=move |ev| {
-                                     text_blocks.text.set(ev.target().value());
-                                 }
-                             />
+                            <TextArea
+                                index=index.get()
+                                text_blocks=text_blocks
+                            />
                          </div>
                      </DraggableItem>
                  </ForEnumerate>
@@ -72,57 +71,28 @@ fn App() -> impl IntoView {
     }
 }
 
-/*#[component]
-fn TextBlock(text: RwSignal<String>) -> impl IntoView {
+#[component]
+fn TextArea(index: usize, text_blocks: TextBlocks) -> impl IntoView {
+    //textarea
+    let node_ref = NodeRef::new();
+    let UseTextareaAutosizeReturn {
+        content,
+        set_content,
+        trigger_resize,
+    } = use_textarea_autosize(node_ref);
+    //textarea
+    //
     view! {
-
+        <textarea
+            id=index
+            class="textarea resize-none"
+            node_ref=node_ref
+            prop:value=content
+            on:input=move |ev| {
+                set_content.set(event_target_value(&ev));
+                //text_blocks.text.set(ev.target().value());
+            }
+            placeholder="Type something..."
+        ></textarea>
     }
-}*/
-
-fn make_text_blocks(list: &mut Vec<TextBlocks>) {
-    for _ in 0..5 {
-        list.push(TextBlocks::new(list.len()));
-    }
 }
-/*
-fn drag_visuals_rust(id_of_text_block: usize) {
-    drag_visuals_js(id_of_text_block);
-}
-
-#[wasm_bindgen]
-extern "C" {
-    fn drag_visuals_js(id_of_text_block: usize);
-}
-
-#[wasm_bindgen]
-pub fn on_drag_end(old_index: JsValue, new_index: JsValue) {
-    let old_result = js_value_to_usize(&old_index);
-    let new_result = js_value_to_usize(&new_index);
-
-    match (old_result, new_result) {
-        (Ok(old_id), Ok(new_id)) => {
-            // do the swap
-        }
-        (Err(e), _) | (_, Err(e)) => {
-            log!("{e}");
-        }
-    }
-
-    /*if let (Ok(old_id), Ok(new_id)) = (old_result, new_result) {
-        // TODO: swap old_id and new_id in the list
-    } else {
-        log!("swap failed: old={:?}, new={:?}", old_result, new_result);
-    }*/
-}
-
-fn js_value_to_usize(value: &JsValue) -> anyhow::Result<usize> {
-    Ok(value
-        .as_string()
-        .ok_or_else(|| anyhow!("JsValue is not a string"))?
-        .parse::<usize>()
-        .map_err(|_| anyhow!("JsValue was a string but couldn't be converted to usize"))?)
-    //.parse::<usize>()
-    //.map_err(|e| anyhow!("failed to parse '{}' as usize: {}", e))
-}
-
-*/

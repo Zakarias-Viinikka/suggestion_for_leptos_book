@@ -1,6 +1,6 @@
-.finale-container {
+.draggable-container {
     width: 700px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(100, 0, 200, 0.15);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,14 +13,6 @@
 }*/
 
 /**/
-
-.li {
-    display: flex;
-    align-items: center;
-    border: 2px solid red;
-    width: 100%;
-    padding: 5px;
-}
 
 .text-input-container {
     display: flex;
@@ -42,7 +34,51 @@
     user-select: none;
 }
 
+.draggable {
+    display: flex;
+    align-items: center;
+    border: 2px solid red;
+    width: 100%;
+    padding: 5px;
+}
+
 .draggable.dragging {
     opacity: 0.5;
     /* or any other effect */
+    overflow: hidden;
+}
+
+/*make textarea look pretty*/
+
+.textarea {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 16px;
+    font-family: inherit;
+    line-height: 1.5;
+    color: #37352f;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    border-radius: 4px;
+    transition: background 0.2s;
+    min-height: 24px;
+    box-sizing: border-box;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.textarea::-webkit-scrollbar {
+    display: none;
+}
+.textarea:hover {
+    background: #f1f1f0;
+}
+
+.textarea:focus {
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(35, 131, 226, 0.2);
 }

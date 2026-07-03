@@ -60,7 +60,7 @@ fn App() -> impl IntoView {
                          <div class="text-input-container">
                             <TextArea
                                 index=index.get()
-                                text_blocks=text_blocks
+                                text=text_blocks.text
                             />
                          </div>
                      </DraggableItem>
@@ -72,7 +72,7 @@ fn App() -> impl IntoView {
 }
 
 #[component]
-fn TextArea(index: usize, text_blocks: TextBlocks) -> impl IntoView {
+fn TextArea(index: usize, text: RwSignal<String>) -> impl IntoView {
     //textarea
     let node_ref = NodeRef::new();
     let UseTextareaAutosizeReturn {
@@ -89,8 +89,8 @@ fn TextArea(index: usize, text_blocks: TextBlocks) -> impl IntoView {
             node_ref=node_ref
             prop:value=content
             on:input=move |ev| {
-                set_content.set(event_target_value(&ev));
-                //text_blocks.text.set(ev.target().value());
+                set_content.set(event_target_value(&ev));//so the resize stuff works
+                text.set(event_target_value(&ev)); //updates the signal
             }
             placeholder="Type something..."
         ></textarea>

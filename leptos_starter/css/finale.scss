@@ -1,4 +1,4 @@
-.draggable-container {
+.finale-container {
     width: 700px;
     box-shadow: 0 4px 12px rgba(100, 0, 200, 0.15);
     display: flex;
@@ -34,7 +34,7 @@
     user-select: none;
 }
 
-.draggable {
+.text-container {
     display: flex;
     align-items: center;
     border: 2px solid red;
@@ -42,11 +42,10 @@
     padding: 5px;
 }
 
-.draggable.dragging {
+/*.text-container.dragging {
     opacity: 0.5;
-    /* or any other effect */
     overflow: hidden;
-}
+}*/
 
 /*make textarea look pretty*/
 

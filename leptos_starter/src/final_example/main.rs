@@ -1,19 +1,17 @@
 use leptos::logging::log; //logging
 use leptos::prelude::*;
+use leptos_starter::js_fn;
 use leptos_use::UseTextareaAutosizeReturn; //text area
 use leptos_use::use_textarea_autosize; // text area
 
-//use leptos::html::Textarea; //for using type NodeRef::textarea outside of component
-/*for the drag reorder visuals */
-/*
- * https://rust-ui.com/docs/components/drag-and-drop
- *
- * cargo install ui-cli --force
- * ui add drag_and_drop
- * ui add drag_and_drop
- */
-//use crate::components::ui::drag_and_drop::{Draggable, DraggableItem, DraggableZone};
-use leptos_starter::components::ui::drag_and_drop::{Draggable, DraggableItem, DraggableZone};
+use anyhow::{Result, anyhow};
+
+//use wasm_bindgen::JsCast; //for macro?
+use leptos::prelude::{on_cleanup, window_event_listener_untyped};
+use wasm_bindgen::{JsCast, JsValue};
+
+use leptos_starter::final_example::js_stuff;
+use leptos_starter::final_example::js_value_parsing;
 
 fn main() {
     console_error_panic_hook::set_once();
@@ -37,62 +35,87 @@ impl TextBlocks {
 
 #[component]
 fn App() -> impl IntoView {
-    let mut list: Vec<TextBlocks> = Vec::new();
+    let list = RwSignal::new(Vec::new());
 
     //make text blocks
-    for _ in 0..5 {
-        list.push(TextBlocks::new(list.len()));
-    }
+    list.update(|l| {
+        for _ in 0..5 {
+            l.push(TextBlocks::new(l.len()));
+        }
+    });
     //make text blocks
 
-    let (list, list_set) = signal(list);
+    //js handle
+    js_fn!("update_signals_from_js", |js_value| {
+        match js_value_parsing::js_value_to_usize_tuple(js_value) {
+            Ok((old_index, new_index)) => {
+                list.get().swap(old_index, new_index);
+            }
+            Err(e) => log!("{}", e), //console.log error
+        }
+    });
+    //js handle
     view! {
         <div class="finale-container">
-         <Draggable>
-             <DraggableZone>
+
+            <ul id="sortable-container draggable">
                  <ForEnumerate
                      each=move || list.get()
                      key=|text_blocks| text_blocks.id
                      let(index, text_blocks)
                  >
-                     <DraggableItem /* ... */ >
-                         <div class="drag-handle">"⠿"</div>
                          <div class="text-input-container">
                             <TextArea
-                                index=index.get()
+                                index=index
                                 text=text_blocks.text
                             />
                          </div>
-                     </DraggableItem>
                  </ForEnumerate>
-             </DraggableZone>
-         </Draggable>
+             //</DraggableZone>
+         </ul>
+
+
+         <div>
+         "this is all of the textblocks combined:"
+         <ForEnumerate
+             each=move || list.get()
+             key=|text_blocks| text_blocks.id
+             let(_, text_blocks)
+         >
+            <span>
+                {move ||
+                    text_blocks.text.get()
+                }
+                <br/>
+            </span>
+         </ForEnumerate>
+         </div>
         </div>
+
+        /*
+         * https://github.com/leptos-rs/leptos/discussions/1471
+         */
+        <js_stuff::JsStuff />
     }
 }
 
 #[component]
-fn TextArea(index: usize, text: RwSignal<String>) -> impl IntoView {
-    //textarea
-    let node_ref = NodeRef::new();
-    let UseTextareaAutosizeReturn {
-        content,
-        set_content,
-        trigger_resize,
-    } = use_textarea_autosize(node_ref);
-    //textarea
+fn TextArea(index: ReadSignal<usize>, text: RwSignal<String>) -> impl IntoView {
     //
     view! {
-        <textarea
-            id=index
-            class="textarea resize-none"
-            node_ref=node_ref
-            prop:value=content
-            on:input=move |ev| {
-                set_content.set(event_target_value(&ev));//so the resize stuff works
-                text.set(event_target_value(&ev)); //updates the signal
-            }
-            placeholder="Type something..."
-        ></textarea>
+        <li class="text-container" data-id={move || index.get()}>
+            <div class="drag-handle">"⠿"</div>
+            <div class="text-input-container">
+                <textarea
+                    id={move || index.get()}
+                    class="textarea"
+                    //prop:value=content
+                    on:input=move |ev| {
+                        text.set(event_target_value(&ev));
+                    }
+                    placeholder="Type something..."
+                ></textarea>
+            </div>
+        </li>
     }
 }

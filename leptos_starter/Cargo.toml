@@ -6,13 +6,16 @@ edition = "2024"
 
 
 [dependencies]
+anyhow = "1.0.103"
 #anyhow = "1.0.103"
 console_error_panic_hook = "0.1.7"
 getrandom = { version = "0.4.3", features = ["wasm_js"] } #rand wouldn't work properly without this one
+js-sys = "0.3.103"
 leptos = { version = "0.8.19", features = ["csr"] }
 
 #https://leptos-use.rs/browser/use_textarea_autosize.html
 leptos-use = { version = "0.19.0", features = ["use_textarea_autosize"] }
+leptos_meta = "0.8.6"
 
 leptos_router = "0.8.13"
 rand = "0.10.1"
@@ -42,7 +45,15 @@ path = "src/signals/memo/main.rs"
 
 [[bin]]
 name = "calling_rust_from_js"
-path = "src/rust_js/calling_rust_from_js/main.rs"
+path = "src/rust_js/rj1_calling_rust_from_js/main.rs"
+
+[[bin]]
+name = "js_signals"
+path = "src/rust_js/rj2_js_accesses_signals/main.rs"
+
+[[bin]]
+name = "clean_js"
+path = "src/rust_js/rj3_cleaner_code/main.rs"
 
 [[bin]]
 name = "enumerate_basic"

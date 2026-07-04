@@ -23,6 +23,9 @@ tw_merge = "0.1.21"
 wasm-bindgen = "0.2.126"
 web-sys = { version = "0.3.103", features = ["DragEvent", "Element", "HtmlElement", "DomTokenList", "NodeList", "DomRect"] }
 
+#local sqlite stuff
+sqlite-wasm-rs = "0.5.5"
+
 [[bin]]
 name = "basic_routing"
 path = "src/routing/r1_basic_routing/main.rs"
@@ -70,3 +73,7 @@ path = "src/for_enumerate/list_of_reactive_components/main.rs"
 [[bin]]
 name = "finale"
 path = "src/final_example/main.rs"
+
+[[bin]]
+name = "read_from_local_sqlite"
+path = "src/sqlite/read_from/main.rs"

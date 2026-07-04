@@ -45,25 +45,17 @@ fn App() -> impl IntoView {
     });
     //make text blocks
 
-    //js handle
+    //js handle //the macro is from rust_js/rj3_cleaner_code/handle_macro.rs
     javascript_take_the_wheel!("update_list_order", |js_value| {
         match js_value_parsing::js_value_to_usize_tuple(js_value) {
             Ok((old_index, new_index)) => {
-                list.update(|v| v.swap(old_index, new_index));
-                /*log!("old id: {}, new id: {}", old_index, new_index);
-                log!(
-                    "actual text at id {}: {}",
-                    old_index,
-                    list.get()[old_index].text.get()
-                );
-                log!(
-                    "actual text at id {}: {}",
-                    new_index,
-                    list.get()[new_index].text.get()
-                );*/
-                for item in list.get().iter() {
+                list.update(|v| {
+                    let item = v.remove(old_index);
+                    v.insert(new_index, item);
+                });
+                /*for item in list.get().iter() {
                     log!("{}", item.text.get())
-                }
+                }*/
             }
             Err(e) => log!("{}", e), //console.log error
         }

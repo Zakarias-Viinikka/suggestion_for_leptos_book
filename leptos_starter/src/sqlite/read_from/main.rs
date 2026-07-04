@@ -1,13 +1,23 @@
+use leptos::logging::log;
 use leptos::prelude::*;
-//sqlite-wasm-rs = "0.5"
+//use sqlite-wasm-rs = "0.5"
 //
 // sudo apt install clang
 //
-use sqlite_wasm_rs as ffi; //necessary as far as i can tell.
 fn main() {
     console_error_panic_hook::set_once();
     mount_to_body(App);
 }
+
+//for db
+use sqlite_wasm_rs as ffi; //necessary as far as i can tell.
+//for exporting the db
+use js_sys::{Array, Uint8Array};
+use wasm_bindgen::{JsCast, JsValue};
+use web_sys::{Blob, Url};
+
+use leptos_starter::sqlite::read_from::black_magic;
+//for exporting the db
 
 /*
  * relevant link, first thing i found:
@@ -19,32 +29,19 @@ fn main() {
 
 #[component]
 fn App() -> impl IntoView {
-    let db = create_local_db_connection(); // returns *mut sqlite3
+    let db = black_magic::create_local_db_connection(); // returns *mut sqlite3
+    black_magic::test_db(db);
+    //black_magic::export_db(db);
 
-    on_cleanup(move || {
+    /*on_cleanup(move || {
         if !db.is_null() {
             unsafe {
                 ffi::sqlite3_close(db);
             }
         }
-    });
-
+    });*/
     view! {
         <div class="container">
         </div>
     }
-}
-
-fn create_local_db_connection() -> *mut ffi::sqlite3 {
-    let mut db = std::ptr::null_mut();
-    let ret = unsafe {
-        ffi::sqlite3_open_v2(
-            c"mem.db".as_ptr().cast(),
-            &mut db as *mut _,
-            ffi::SQLITE_OPEN_READWRITE | ffi::SQLITE_OPEN_CREATE,
-            std::ptr::null(),
-        )
-    };
-    assert_eq!(ffi::SQLITE_OK, ret);
-    db
 }

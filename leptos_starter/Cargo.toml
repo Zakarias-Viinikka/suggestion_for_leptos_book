@@ -21,7 +21,8 @@ leptos_router = "0.8.13"
 rand = "0.10.1"
 tw_merge = "0.1.21"
 wasm-bindgen = "0.2.126"
-web-sys = { version = "0.3.103", features = ["DragEvent", "Element", "HtmlElement", "DomTokenList", "NodeList", "DomRect"] }
+web-sys = { version = "0.3.103", features = ["DragEvent", "Element", "HtmlElement", "DomTokenList", "NodeList", "DomRect", "Blob", "Url"] }
+#Blob and Url are for exporting sqldb as something i can download so that i can verify my db code is doing what i want it to.
 
 #local sqlite stuff
 sqlite-wasm-rs = "0.5.5"

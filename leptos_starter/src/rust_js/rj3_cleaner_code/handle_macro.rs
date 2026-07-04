@@ -1,5 +1,5 @@
 #[macro_export]
-macro_rules! js_fn {
+macro_rules! javascript_take_the_wheel {
     ($name:expr, |$payload:ident| $callback:expr) => {
         use leptos::prelude::{on_cleanup, window_event_listener_untyped};
         use wasm_bindgen::{JsCast, JsValue};

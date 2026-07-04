@@ -1,7 +1,7 @@
 use anyhow::{Result, anyhow};
 use leptos::logging::log;
 use leptos::prelude::*; // easier error messages
-use leptos_starter::js_fn; //macro
+use leptos_starter::javascript_take_the_wheel; //macro
 use wasm_bindgen::JsValue; // Needed for js_value_to_i32
 
 fn main() {
@@ -13,7 +13,7 @@ fn main() {
 fn App() -> impl IntoView {
     let (signal, signal_set) = signal(0);
 
-    js_fn!("update_rust_signal_from_javascript", |js_value| {
+    javascript_take_the_wheel!("update_rust_signal_from_javascript", |js_value| {
         match js_value_to_i32(js_value) {
             Ok(num) => signal_set.set(num), //set signal if everything looks good
             Err(e) => log!("{}", e),        //console.log error

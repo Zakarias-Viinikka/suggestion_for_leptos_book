@@ -56,6 +56,10 @@ name = "clean_js"
 path = "src/rust_js/rj3_cleaner_code/main.rs"
 
 [[bin]]
+name = "js_for_js"
+path = "src/rust_js/rj1_calling_rust_from_js/this_no_work.rs"
+
+[[bin]]
 name = "enumerate_basic"
 path = "src/for_enumerate/basic_example/main.rs"
 

@@ -1,6 +1,6 @@
 use leptos::logging::log; //logging
 use leptos::prelude::*;
-use leptos_starter::js_fn;
+use leptos_starter::javascript_take_the_wheel;
 use leptos_use::UseTextareaAutosizeReturn; //text area
 use leptos_use::use_textarea_autosize; // text area
 
@@ -46,10 +46,24 @@ fn App() -> impl IntoView {
     //make text blocks
 
     //js handle
-    js_fn!("update_signals_from_js", |js_value| {
+    javascript_take_the_wheel!("update_list_order", |js_value| {
         match js_value_parsing::js_value_to_usize_tuple(js_value) {
             Ok((old_index, new_index)) => {
-                list.get().swap(old_index, new_index);
+                list.update(|v| v.swap(old_index, new_index));
+                /*log!("old id: {}, new id: {}", old_index, new_index);
+                log!(
+                    "actual text at id {}: {}",
+                    old_index,
+                    list.get()[old_index].text.get()
+                );
+                log!(
+                    "actual text at id {}: {}",
+                    new_index,
+                    list.get()[new_index].text.get()
+                );*/
+                for item in list.get().iter() {
+                    log!("{}", item.text.get())
+                }
             }
             Err(e) => log!("{}", e), //console.log error
         }
@@ -58,38 +72,34 @@ fn App() -> impl IntoView {
     view! {
         <div class="finale-container">
 
-            <ul id="sortable-container draggable">
+            <ul id="sortable-container">
                  <ForEnumerate
                      each=move || list.get()
                      key=|text_blocks| text_blocks.id
                      let(index, text_blocks)
-                 >
-                         <div class="text-input-container">
-                            <TextArea
-                                index=index
-                                text=text_blocks.text
-                            />
-                         </div>
+                >
+                    <TextArea
+                        index=index
+                        text=text_blocks.text
+                    />
                  </ForEnumerate>
-             //</DraggableZone>
-         </ul>
+             </ul>
 
-
-         <div>
-         "this is all of the textblocks combined:"
-         <ForEnumerate
-             each=move || list.get()
-             key=|text_blocks| text_blocks.id
-             let(_, text_blocks)
-         >
-            <span>
-                {move ||
-                    text_blocks.text.get()
-                }
-                <br/>
-            </span>
-         </ForEnumerate>
-         </div>
+             <div>
+             "this is all of the textblocks combined:"
+             <ForEnumerate
+                 each=move || list.get()
+                 key=|text_blocks| text_blocks.id
+                 let(_, text_blocks)
+             >
+                <span>
+                    {move ||
+                        text_blocks.text.get()
+                    }
+                    <br/>
+                </span>
+             </ForEnumerate>
+             </div>
         </div>
 
         /*

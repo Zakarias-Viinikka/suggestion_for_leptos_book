@@ -46,7 +46,10 @@ pub fn generate_create_table_sql(table: Table) -> String {
 }
 
 pub fn generate_insert_sql(table: Table, values: Vec<String>) -> String {
-    let quoted_values: Vec<String> = values.iter().map(|v| format!("'{}'", v)).collect();
+    let quoted_values: Vec<String> = values
+        .iter()
+        .map(|v| format!("'{}'", sanitize(v.as_ref())))
+        .collect();
     format!(
         "INSERT INTO {} ({}) VALUES ({});",
         table.table_name,
@@ -72,7 +75,7 @@ pub fn generate_swap_two_values_sql(
         WHEN id = {id1} THEN (SELECT {column} FROM {table} WHERE id = {id2})
         WHEN id = {id2} THEN (SELECT {column} FROM {table} WHERE id = {id1})
     END
-    WHERE id IN (1, 2);
+    WHERE id IN ({id1}, {id2});
     ",
         table = table_name,
         column = column_name,
@@ -80,13 +83,45 @@ pub fn generate_swap_two_values_sql(
         id2 = id2
     )
 }
-//DELETE FROM users WHERE id = 5;
+
 pub fn generate_delete_sql(id: usize, table_name: String) -> String {
     format!(
         "DELETE FROM {table} WHERE id = {id};",
         table = table_name,
         id = id
     )
+}
+
+//UPDATE users SET name = 'Bob', age = 30 WHERE id = 3;
+pub fn generate_update_sql<I, K, V>(
+    id: usize,
+    table_name: &str,
+    columns_and_new_values: I,
+) -> String
+where
+    I: IntoIterator<Item = (K, V)>,
+    K: AsRef<str>, // column name can be &str or String
+    V: AsRef<str>, // value can be &str or String
+{
+    let col_and_val = columns_and_new_values
+        .into_iter()
+        .map(|(col, val)| {
+            let sanitized_val = sanitize(val.as_ref());
+            format!("{} = '{}'", col.as_ref(), sanitized_val)
+        })
+        .collect::<Vec<_>>()
+        .join(", ");
+
+    format!(
+        "UPDATE {table} SET {col_and_val} WHERE id = {id};",
+        table = table_name,
+        col_and_val = col_and_val,
+        id = id
+    )
+}
+
+fn sanitize(input: &str) -> String {
+    input.replace("'", "''")
 }
 
 /*
@@ -162,5 +197,39 @@ mod tests {
         let sql = generate_delete_sql(42, "orders".to_string());
         let expected = "DELETE FROM orders WHERE id = 42;";
         assert_eq!(sql, expected);
+    }
+
+    //pub fn generate_update_sql<I, K, V>(id: usize, table_name: &str, columns_and_new_values: I) -> String
+    #[test]
+    fn test_generate_update_sql_single() {
+        let sql = generate_update_sql(5, "employees", vec![("name", "Alice")]);
+        let expected = "UPDATE employees SET name = 'Alice' WHERE id = 5;";
+        assert_eq!(sql, expected);
+    }
+
+    #[test]
+    fn test_generate_update_sql_multiple() {
+        let sql = generate_update_sql(10, "products", vec![("price", "99"), ("stock", "5")]);
+        let expected = "UPDATE products SET price = '99', stock = '5' WHERE id = 10;";
+        assert_eq!(sql, expected);
+    }
+
+    #[test]
+    fn test_generate_update_sql_escapes_quotes() {
+        let sql = generate_update_sql(7, "authors", vec![("name", "O'Reilly")]);
+        let expected = "UPDATE authors SET name = 'O''Reilly' WHERE id = 7;";
+        assert_eq!(sql, expected);
+    }
+
+    #[test]
+    fn test_sanitize() {
+        // No quotes → unchanged
+        assert_eq!(sanitize("hello"), "hello");
+        // Single quote → doubled
+        assert_eq!(sanitize("O'Reilly"), "O''Reilly");
+        // Multiple quotes → all doubled
+        assert_eq!(sanitize("a'b'c"), "a''b''c");
+        // Empty string → empty
+        assert_eq!(sanitize(""), "");
     }
 }

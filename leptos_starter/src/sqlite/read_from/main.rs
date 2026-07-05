@@ -9,15 +9,8 @@ fn main() {
     mount_to_body(App);
 }
 
-//for db
-use sqlite_wasm_rs as ffi; //necessary as far as i can tell.
-//for exporting the db
-use js_sys::{Array, Uint8Array};
-use wasm_bindgen::{JsCast, JsValue};
-use web_sys::{Blob, Url};
-
 use leptos_starter::sqlite::read_from::black_magic;
-//for exporting the db
+use leptos_starter::sqlite::read_from::create_sql_statements::*;
 
 /*
  * relevant link, first thing i found:
@@ -29,7 +22,48 @@ use leptos_starter::sqlite::read_from::black_magic;
 
 #[component]
 fn App() -> impl IntoView {
-    let db = black_magic::create_local_db_connection(); // returns *mut sqlite3
+    let table = Table {
+        table_name: "content".to_string(),
+        columns: vec![
+            Column {
+                column_name: "textblock".to_string(),
+                column_type: ColumnType::Text,
+            },
+            Column {
+                column_name: "metadata".to_string(),
+                column_type: ColumnType::Text,
+            },
+        ],
+    };
+
+    let db = black_magic::create_local_db_connection("default-db"); //  returns Result<*mut sqlite3, Error>
+    match db {
+        Ok(db) => {
+            match black_magic::create_table(db, &table) {
+                Ok(_) => {
+                    let values = vec![
+                        "your text content here".to_string(),
+                        "{\"key\": \"value\"}".to_string(), // JSON for metadata
+                    ];
+                    match black_magic::insert_into_table(db, &table, values) {
+                        Ok(_) => {
+                            log!("everything went well with db");
+                            //black_magic::export_db(db);
+                        }
+                        Err(e) => {
+                            log!("Error inserting into table: {}", e)
+                        }
+                    }
+                }
+                Err(e) => {
+                    log!("Error creating table: {}", e)
+                }
+            }
+        }
+        Err(e) => {
+            log!("Error creating database: {}", e)
+        }
+    }
     //black_magic::test_db(db);
     //black_magic::export_db(db);
 

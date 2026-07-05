@@ -1,14 +1,14 @@
 use leptos::logging::log; //logging
 use leptos::prelude::*;
 use leptos_starter::javascript_take_the_wheel;
-use leptos_use::UseTextareaAutosizeReturn; //text area
-use leptos_use::use_textarea_autosize; // text area
+//use leptos_use::UseTextareaAutosizeReturn; //text area
+//use leptos_use::use_textarea_autosize; // text area
 
 use anyhow::{Result, anyhow};
 
 //use wasm_bindgen::JsCast; //for macro?
-use leptos::prelude::{on_cleanup, window_event_listener_untyped};
-use wasm_bindgen::{JsCast, JsValue};
+//use leptos::prelude::{on_cleanup, window_event_listener_untyped};
+//use wasm_bindgen::{JsCast, JsValue};
 
 use leptos_starter::final_example::js_stuff;
 use leptos_starter::final_example::js_value_parsing;

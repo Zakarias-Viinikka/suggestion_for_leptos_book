@@ -1,7 +1,3 @@
-//to run test:
-// cargo test --lib --target x86_64-unknown-linux-gnu
-//
-
 pub enum ColumnType {
     Integer,
     Text,
@@ -30,13 +26,15 @@ pub struct Table {
     pub columns: Vec<Column>, // now public
 }
 
-pub fn generate_create_table_sql(table: Table) -> String {
-    //CREATE TABLE IF NOT EXISTS test_data (value INTEGER);
-    let cols: Vec<String> = table
-        .columns
-        .iter()
-        .map(|c| format!("{} {}", c.column_name, c.column_type.as_str()))
-        .collect();
+pub fn generate_create_table_sql(table: &Table) -> String {
+    let mut cols = vec!["id INTEGER PRIMARY KEY AUTOINCREMENT".to_string()];
+    cols.extend(
+        table
+            .columns
+            .iter()
+            .filter(|c| c.column_name != "id")
+            .map(|c| format!("{} {}", c.column_name, c.column_type.as_str())),
+    );
 
     format!(
         "CREATE TABLE IF NOT EXISTS {} ({});",
@@ -45,7 +43,7 @@ pub fn generate_create_table_sql(table: Table) -> String {
     )
 }
 
-pub fn generate_insert_sql(table: Table, values: Vec<String>) -> String {
+pub fn generate_insert_sql(table: &Table, values: Vec<String>) -> String {
     let quoted_values: Vec<String> = values
         .iter()
         .map(|v| format!("'{}'", sanitize(v.as_ref())))
@@ -130,12 +128,14 @@ enum HappySql { SanitizedSqlInput(String)) }
 together with a method i would have like fn sanitize_userinput_to_sql(input: String) -> SanitizedSqlInput(String)) {}
  */
 
+//wasm-pack test --headless --chrome
 #[cfg(test)]
 mod tests {
     use super::*;
+    //use wasm_bindgen_test::*;
 
     #[test]
-    fn test_generate_create_table_sql() {
+    pub fn test_generate_create_table_sql() {
         let table = Table {
             table_name: "employees".to_string(),
             columns: vec![
@@ -154,14 +154,13 @@ mod tests {
             ],
         };
 
-        let sql = generate_create_table_sql(table);
-        let expected =
-            "CREATE TABLE IF NOT EXISTS employees (emp_id INTEGER, first_name TEXT, salary REAL);";
+        let sql = generate_create_table_sql(&table);
+        let expected = "CREATE TABLE IF NOT EXISTS employees (id INTEGER PRIMARY KEY AUTOINCREMENT, emp_id INTEGER, first_name TEXT, salary REAL);";
         assert_eq!(sql, expected);
     }
 
     #[test]
-    fn test_generate_insert_sql() {
+    pub fn test_generate_insert_sql() {
         let table = Table {
             table_name: "products".to_string(),
             columns: vec![
@@ -176,13 +175,13 @@ mod tests {
             ],
         };
         let values = vec!["100".to_string(), "Laptop".to_string()];
-        let sql = generate_insert_sql(table, values);
+        let sql = generate_insert_sql(&table, values);
         let expected = "INSERT INTO products (product_id, product_name) VALUES ('100', 'Laptop');";
         assert_eq!(sql, expected);
     }
 
     #[test]
-    fn test_generate_swap_two_values_sql() {
+    pub fn test_generate_swap_two_values_sql() {
         let sql = generate_swap_two_values_sql(5, 10, "inventory".to_string(), "stock".to_string());
 
         assert!(sql.contains("UPDATE inventory"));
@@ -193,7 +192,7 @@ mod tests {
     }
 
     #[test]
-    fn test_generate_delete_sql() {
+    pub fn test_generate_delete_sql() {
         let sql = generate_delete_sql(42, "orders".to_string());
         let expected = "DELETE FROM orders WHERE id = 42;";
         assert_eq!(sql, expected);
@@ -201,28 +200,28 @@ mod tests {
 
     //pub fn generate_update_sql<I, K, V>(id: usize, table_name: &str, columns_and_new_values: I) -> String
     #[test]
-    fn test_generate_update_sql_single() {
+    pub fn test_generate_update_sql_single() {
         let sql = generate_update_sql(5, "employees", vec![("name", "Alice")]);
         let expected = "UPDATE employees SET name = 'Alice' WHERE id = 5;";
         assert_eq!(sql, expected);
     }
 
     #[test]
-    fn test_generate_update_sql_multiple() {
+    pub fn test_generate_update_sql_multiple() {
         let sql = generate_update_sql(10, "products", vec![("price", "99"), ("stock", "5")]);
         let expected = "UPDATE products SET price = '99', stock = '5' WHERE id = 10;";
         assert_eq!(sql, expected);
     }
 
     #[test]
-    fn test_generate_update_sql_escapes_quotes() {
+    pub fn test_generate_update_sql_escapes_quotes() {
         let sql = generate_update_sql(7, "authors", vec![("name", "O'Reilly")]);
         let expected = "UPDATE authors SET name = 'O''Reilly' WHERE id = 7;";
         assert_eq!(sql, expected);
     }
 
     #[test]
-    fn test_sanitize() {
+    pub fn test_sanitize() {
         // No quotes → unchanged
         assert_eq!(sanitize("hello"), "hello");
         // Single quote → doubled

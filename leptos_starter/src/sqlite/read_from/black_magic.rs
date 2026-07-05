@@ -1,5 +1,5 @@
-use js_sys::{Array, Uint8Array};
-use wasm_bindgen::{JsCast, JsValue};
+//use js_sys::{Array, Uint8Array};
+use wasm_bindgen::{JsCast /*JsValue*/};
 use web_sys::{Blob, Url};
 //for db
 use leptos::logging::log;
@@ -8,18 +8,19 @@ use sqlite_wasm_rs as ffi; //necessary as far as i can tell.
 use crate::sqlite::read_from::create_sql_statements::*;
 
 use anyhow::{Result, anyhow, bail};
+use std::ffi::CString; //let sql_cstr = CString::new(sql).map_err(|e| anyhow!("CString conversion failed: {}", e))?;
 
-pub fn create_local_db_connection() -> Result<*mut ffi::sqlite3> {
+pub fn create_local_db_connection(filename: &str) -> Result<*mut ffi::sqlite3> {
+    let filename_cstr = CString::new(filename)?; // converts &str to CString, errors if contains nul byte
     let mut db = std::ptr::null_mut();
     let ret = unsafe {
         ffi::sqlite3_open_v2(
-            c"mem.db".as_ptr().cast(),
+            filename_cstr.as_ptr().cast(),
             &mut db as *mut _,
             ffi::SQLITE_OPEN_READWRITE | ffi::SQLITE_OPEN_CREATE,
             std::ptr::null(),
         )
     };
-    //assert_eq!(ffi::SQLITE_OK, ret);
     if ret != ffi::SQLITE_OK {
         bail!("Failed to open database: {}", ffi::code_to_str(ret));
     }
@@ -31,12 +32,13 @@ let sql = format!("CREATE TABLE {} ({});", table_name, column_defs);
 let c_sql = std::ffi::CString::new(sql).unwrap();
 // then pass c_sql.as_ptr().cast() to sqlite3_exec
 */
-pub fn create_test_table(db: *mut ffi::sqlite3) -> Result<()> {
-    let sql = c"CREATE TABLE IF NOT EXISTS test_data (value INTEGER);";
+pub fn create_table(db: *mut ffi::sqlite3, table: &Table) -> Result<()> {
+    let sql = generate_create_table_sql(table);
+    let sql_cstr = CString::new(sql).map_err(|e| anyhow!("CString conversion failed: {}", e))?;
     unsafe {
         let ret = ffi::sqlite3_exec(
             db,
-            sql.as_ptr().cast(),
+            sql_cstr.as_ptr().cast(),
             None,
             std::ptr::null_mut(),
             std::ptr::null_mut(),
@@ -49,18 +51,22 @@ pub fn create_test_table(db: *mut ffi::sqlite3) -> Result<()> {
     }
 }
 
-pub fn insert_test_value(db: *mut ffi::sqlite3, value: i32) -> Result<()> {
-    let sql = c"INSERT INTO test_data VALUES (?);"; // placeholder for binding
+pub fn insert_into_table(db: *mut ffi::sqlite3, table: &Table, values: Vec<String>) -> Result<()> {
+    let sql = generate_insert_sql(table, values);
+    let sql_cstr = CString::new(sql)?;
     unsafe {
-        // You'll need to use sqlite3_prepare_v2 + sqlite3_bind_int + sqlite3_step for this.
-        // But if you want to keep it simple with sqlite3_exec, you'd interpolate:
-        // let sql = format!("INSERT INTO test_data VALUES ({});", value);
-        // let c_sql = CString::new(sql)?;
-        // ... then exec.
-        // I'm leaving the placeholder to show the intended direction.
-        // Return Ok(()) for now as a stub.
-        Ok(())
+        let ret = ffi::sqlite3_exec(
+            db,
+            sql_cstr.as_ptr(),
+            None,
+            std::ptr::null_mut(),
+            std::ptr::null_mut(),
+        );
+        if ret != ffi::SQLITE_OK {
+            bail!("insert failed: {}", ffi::code_to_str(ret));
+        }
     }
+    Ok(())
 }
 
 pub fn export_db(db: *mut ffi::sqlite3) -> Result<()> {
@@ -102,3 +108,15 @@ pub fn export_db(db: *mut ffi::sqlite3) -> Result<()> {
         Ok(())
     }
 }
+
+//
+// //
+//
+// test in tests/web.rs
+// had to do weird shit to get it to work.
+// wasm-pack test --headless --firefox
+// wasm-pack test --headless --firefox
+// wasm-pack test --headless --firefox
+//
+// //
+//

@@ -30,6 +30,9 @@ web-sys = { version = "0.3.103", features = ["DragEvent", "Element", "HtmlElemen
 # before but i had to do this to get cargo test to work for my machine
 sqlite-wasm-rs = { version = "0.4.5", default-features = false, features = ["precompiled"] }
 
+#trying to get tests to work part 2 //this is just for tests/web.rs
+wasm-bindgen-test = "0.3.76"
+
 [[bin]]
 name = "basic_routing"
 path = "src/routing/r1_basic_routing/main.rs"

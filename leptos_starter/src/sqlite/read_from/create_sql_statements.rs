@@ -77,7 +77,7 @@ pub fn generate_swap_two_values_sql(
     format!(
         "
     UPDATE {table}
-    SET value = CASE
+    SET {column} = CASE
         WHEN id = {id1} THEN (SELECT {column} FROM {table} WHERE id = {id2})
         WHEN id = {id2} THEN (SELECT {column} FROM {table} WHERE id = {id1})
     END
@@ -103,57 +103,58 @@ mod tests {
     #[test]
     fn test_generate_create_table_sql() {
         let table = Table {
-            table_name: "users".to_string(),
+            table_name: "employees".to_string(),
             columns: vec![
                 Column {
-                    column_name: "id".to_string(),
+                    column_name: "emp_id".to_string(),
                     column_type: ColumnType::Integer,
                 },
                 Column {
-                    column_name: "name".to_string(),
+                    column_name: "first_name".to_string(),
                     column_type: ColumnType::Text,
                 },
                 Column {
-                    column_name: "age".to_string(),
+                    column_name: "salary".to_string(),
                     column_type: ColumnType::Real,
                 },
             ],
         };
 
         let sql = generate_create_table_sql(table);
-        let expected = "CREATE TABLE IF NOT EXISTS users (id INTEGER, name TEXT, age REAL);";
+        let expected =
+            "CREATE TABLE IF NOT EXISTS employees (emp_id INTEGER, first_name TEXT, salary REAL);";
         assert_eq!(sql, expected);
     }
 
     #[test]
     fn test_generate_insert_sql() {
         let table = Table {
-            table_name: "users".to_string(),
+            table_name: "products".to_string(),
             columns: vec![
                 Column {
-                    column_name: "id".to_string(),
+                    column_name: "product_id".to_string(),
                     column_type: ColumnType::Integer,
                 },
                 Column {
-                    column_name: "name".to_string(),
+                    column_name: "product_name".to_string(),
                     column_type: ColumnType::Text,
                 },
             ],
         };
-        let values = vec!["1".to_string(), "Alice".to_string()];
+        let values = vec!["100".to_string(), "Laptop".to_string()];
         let sql = generate_insert_sql(table, values);
-        let expected = "INSERT INTO users (id, name) VALUES ('1', 'Alice');";
+        let expected = "INSERT INTO products (product_id, product_name) VALUES ('100', 'Laptop');";
         assert_eq!(sql, expected);
     }
 
     #[test]
     fn test_generate_swap_two_values_sql() {
-        let sql = generate_swap_two_values_sql(1, 2, "items".to_string(), "value".to_string());
+        let sql = generate_swap_two_values_sql(5, 10, "inventory".to_string(), "stock".to_string());
 
-        assert!(sql.contains("UPDATE items"));
-        assert!(sql.contains("SET value = CASE"));
-        assert!(sql.contains("WHEN id = 1 THEN (SELECT value FROM items WHERE id = 2)"));
-        assert!(sql.contains("WHEN id = 2 THEN (SELECT value FROM items WHERE id = 1)"));
-        assert!(sql.contains("WHERE id IN (1, 2)"));
+        assert!(sql.contains("UPDATE inventory"));
+        assert!(sql.contains("SET stock = CASE"));
+        assert!(sql.contains("WHEN id = 5 THEN (SELECT stock FROM inventory WHERE id = 10)"));
+        assert!(sql.contains("WHEN id = 10 THEN (SELECT stock FROM inventory WHERE id = 5)"));
+        assert!(sql.contains("WHERE id IN (5, 10)"));
     }
 }

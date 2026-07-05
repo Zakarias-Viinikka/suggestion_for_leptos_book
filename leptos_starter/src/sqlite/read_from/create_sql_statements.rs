@@ -45,7 +45,6 @@ pub fn generate_create_table_sql(table: Table) -> String {
     )
 }
 
-//INSERT INTO users (id, name) VALUES (1, 'Alice');
 pub fn generate_insert_sql(table: Table, values: Vec<String>) -> String {
     let quoted_values: Vec<String> = values.iter().map(|v| format!("'{}'", v)).collect();
     format!(
@@ -58,6 +57,36 @@ pub fn generate_insert_sql(table: Table, values: Vec<String>) -> String {
             .collect::<Vec<_>>()
             .join(", "),
         quoted_values.join(", ")
+    )
+}
+
+/*
+UPDATE items
+SET value = CASE
+    WHEN id = 1 THEN (SELECT value FROM items WHERE id = 2)
+    WHEN id = 2 THEN (SELECT value FROM items WHERE id = 1)
+END
+WHERE id IN (1, 2);
+ */
+pub fn generate_swap_two_values_sql(
+    id1: usize,
+    id2: usize,
+    table_name: String,
+    column_name: String,
+) -> String {
+    format!(
+        "
+    UPDATE {table}
+    SET value = CASE
+        WHEN id = {id1} THEN (SELECT {column} FROM {table} WHERE id = {id2})
+        WHEN id = {id2} THEN (SELECT {column} FROM {table} WHERE id = {id1})
+    END
+    WHERE id IN (1, 2);
+    ",
+        table = table_name,
+        column = column_name,
+        id1 = id1,
+        id2 = id2
     )
 }
 
@@ -115,5 +144,16 @@ mod tests {
         let sql = generate_insert_sql(table, values);
         let expected = "INSERT INTO users (id, name) VALUES ('1', 'Alice');";
         assert_eq!(sql, expected);
+    }
+
+    #[test]
+    fn test_generate_swap_two_values_sql() {
+        let sql = generate_swap_two_values_sql(1, 2, "items".to_string(), "value".to_string());
+
+        assert!(sql.contains("UPDATE items"));
+        assert!(sql.contains("SET value = CASE"));
+        assert!(sql.contains("WHEN id = 1 THEN (SELECT value FROM items WHERE id = 2)"));
+        assert!(sql.contains("WHEN id = 2 THEN (SELECT value FROM items WHERE id = 1)"));
+        assert!(sql.contains("WHERE id IN (1, 2)"));
     }
 }

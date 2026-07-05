@@ -59,15 +59,6 @@ pub fn generate_insert_sql(table: Table, values: Vec<String>) -> String {
         quoted_values.join(", ")
     )
 }
-
-/*
-UPDATE items
-SET value = CASE
-    WHEN id = 1 THEN (SELECT value FROM items WHERE id = 2)
-    WHEN id = 2 THEN (SELECT value FROM items WHERE id = 1)
-END
-WHERE id IN (1, 2);
- */
 pub fn generate_swap_two_values_sql(
     id1: usize,
     id2: usize,
@@ -87,6 +78,14 @@ pub fn generate_swap_two_values_sql(
         column = column_name,
         id1 = id1,
         id2 = id2
+    )
+}
+//DELETE FROM users WHERE id = 5;
+pub fn generate_delete_sql(id: usize, table_name: String) -> String {
+    format!(
+        "DELETE FROM {table} WHERE id = {id};",
+        table = table_name,
+        id = id
     )
 }
 
@@ -156,5 +155,12 @@ mod tests {
         assert!(sql.contains("WHEN id = 5 THEN (SELECT stock FROM inventory WHERE id = 10)"));
         assert!(sql.contains("WHEN id = 10 THEN (SELECT stock FROM inventory WHERE id = 5)"));
         assert!(sql.contains("WHERE id IN (5, 10)"));
+    }
+
+    #[test]
+    fn test_generate_delete_sql() {
+        let sql = generate_delete_sql(42, "orders".to_string());
+        let expected = "DELETE FROM orders WHERE id = 42;";
+        assert_eq!(sql, expected);
     }
 }

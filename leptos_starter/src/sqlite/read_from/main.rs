@@ -30,7 +30,7 @@ use leptos_starter::sqlite::read_from::black_magic;
 #[component]
 fn App() -> impl IntoView {
     let db = black_magic::create_local_db_connection(); // returns *mut sqlite3
-    black_magic::test_db(db);
+    //black_magic::test_db(db);
     //black_magic::export_db(db);
 
     /*on_cleanup(move || {

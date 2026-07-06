@@ -3,22 +3,34 @@ use wasm_bindgen::{JsCast /*JsValue*/};
 use web_sys::{Blob, Url};
 //for db
 use leptos::logging::log;
-use sqlite_wasm_rs as ffi; //necessary as far as i can tell.
+
+// new for sahpool
+use sqlite_wasm_rs::{
+    self as ffi,
+    sahpool_vfs::{OpfsSAHPoolCfg, install as install_opfs_sahpool},
+};
+//old //use sqlite_wasm_rs as ffi; //necessary as far as i can tell.
 
 use crate::sqlite::read_from::create_sql_statements::*;
 
 use anyhow::{Result, anyhow, bail};
 use std::ffi::CString; //let sql_cstr = CString::new(sql).map_err(|e| anyhow!("CString conversion failed: {}", e))?;
 
-pub fn create_local_db_connection(filename: &str) -> Result<*mut ffi::sqlite3> {
+pub async fn create_local_db_connection(filename: &str) -> Result<*mut ffi::sqlite3> {
+    install_opfs_sahpool(&OpfsSAHPoolCfg::default(), true).await?;
+
     let filename_cstr = CString::new(filename)?; // converts &str to CString, errors if contains nul byte
     let mut db = std::ptr::null_mut();
+    // The 4th parameter to sqlite3_open_v2 is the VFS name (as a C string).
+    // Passing null (default) uses the memory VFS.
+    // To use sahpool (OPFS storage), we pass a pointer to the string "sahpool".
+    let vfs_name = c"sahpool"; // C-string literal for the VFS name
     let ret = unsafe {
         ffi::sqlite3_open_v2(
             filename_cstr.as_ptr().cast(),
             &mut db as *mut _,
             ffi::SQLITE_OPEN_READWRITE | ffi::SQLITE_OPEN_CREATE,
-            std::ptr::null(),
+            vfs_name.as_ptr().cast(), // Changed from std::ptr::null() to this
         )
     };
     if ret != ffi::SQLITE_OK {
@@ -27,11 +39,6 @@ pub fn create_local_db_connection(filename: &str) -> Result<*mut ffi::sqlite3> {
     Ok(db)
 }
 
-/*
-let sql = format!("CREATE TABLE {} ({});", table_name, column_defs);
-let c_sql = std::ffi::CString::new(sql).unwrap();
-// then pass c_sql.as_ptr().cast() to sqlite3_exec
-*/
 pub fn create_table(db: *mut ffi::sqlite3, table: &Table) -> Result<()> {
     let sql = generate_create_table_sql(table);
     let sql_cstr = CString::new(sql).map_err(|e| anyhow!("CString conversion failed: {}", e))?;
@@ -112,7 +119,7 @@ pub fn export_db(db: *mut ffi::sqlite3) -> Result<()> {
 //
 // //
 //
-// test in tests/web.rs
+// tests in tests/web.rs
 // had to do weird shit to get it to work.
 // wasm-pack test --headless --firefox
 // wasm-pack test --headless --firefox

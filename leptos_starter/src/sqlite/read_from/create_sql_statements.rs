@@ -1,3 +1,4 @@
+#[derive(Clone)]
 pub enum ColumnType {
     Integer,
     Text,
@@ -16,11 +17,13 @@ impl ColumnType {
     }
 }
 
+#[derive(Clone)]
 pub struct Column {
     pub column_name: String,     // now public
     pub column_type: ColumnType, // now public
 }
 
+#[derive(Clone)]
 pub struct Table {
     pub table_name: String,   // now public
     pub columns: Vec<Column>, // now public

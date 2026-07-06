@@ -15,6 +15,7 @@ fn main() {
 
 #[component]
 fn App() -> impl IntoView {
+    /* the reason this doesn't work is because, as of writin leptos_workers only works for leptos versions up to 0.8 */
     //let db_response = LocalResource::new(async move || worker_test(MyRequest).await);
     let tmp = LocalResource::new(async move || simple_ping("".to_string()).await);
     view! {
@@ -26,7 +27,7 @@ fn App() -> impl IntoView {
                     _ => view! {"de_response is not empty"}
                 }
             }}
-            </p>*/""
+            </p>*/
         </div>
     }
 }

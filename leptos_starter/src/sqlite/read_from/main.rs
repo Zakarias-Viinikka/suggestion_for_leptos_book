@@ -42,20 +42,10 @@ fn App() -> impl IntoView {
         ],
     };
 
-    /* i had to this for some reason in !!!TRUNK.TOML!!!:
-    [[target]]
-    path = "src/sqlite/read_from/worker.rs"  # your worker code
-        and then in cargo.toml:
-    [[bin]]
-    name = "db_worker"
-    path = "src/sqlite/read_from/worker.rs"
-        and then in index:
-    <link data-trunk rel="rust" data-type="worker" data-bin="db_worker" />
-    */
     let db_response = LocalResource::new(move || {
         let table_clone = table.clone(); // clone here, outside async block
         async move {
-            worker(/*table_clone*/ true).await // use the clone, not the original
+            worker_test(/*table_clone*/ true).await // use the clone, not the original
         }
     });
     //sahpool doesn't support multiple connections which means that if the website is opened in another tab the connection fails.
@@ -63,13 +53,6 @@ fn App() -> impl IntoView {
     // other alternative is to more manually drop the connection if it hasn't been used in a while and try to reconnect when you need it
     // // tracks `count`, and reloads by calling `load_data`
     // whenever it changes
-
-    //blabla.bla2(table)
-    /*let _db_loader = LocalResource::new(move || {
-        let table = table.clone(); // clone here, keep original in closure
-    });*/
-    //black_magic::test_db(db);
-    //black_magic::export_db(db);
 
     /*on_cleanup(move || {
         if !db.is_null() {
@@ -87,9 +70,24 @@ fn App() -> impl IntoView {
                 Some(Ok(DbResponse::Error { message })) => format!("DB error: {}", message),
                 Some(Err(e)) => format!("Worker error: {}", e),
                 None => "Loading...".to_string(),
-            } }*/ "hello"
+            } }*/
+            <p>
+            {move || {
+                match db_response.get() {
+                    None => view! { "db_response is empty" },
+                    _ => view! {"de_response is not empty"}
+                }
+            }}
+            </p>
         </p>
 
         </div>
     }
+}
+
+//cargo add leptos_workers
+// cargo add serde --features derive
+#[worker(DoDbStuff)]
+pub async fn worker_test(/*table: Table*/ abc: bool) -> DbResponse {
+    DbResponse::Success
 }

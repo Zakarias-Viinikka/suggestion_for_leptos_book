@@ -1356,6 +1356,7 @@ dependencies = [
  "anyhow",
  "console_error_panic_hook",
  "getrandom 0.4.3",
+ "gloo-timers 0.4.0",
  "js-sys",
  "leptos",
  "leptos-use",

@@ -34,6 +34,7 @@ sqlite-wasm-rs = { version = "0.4.5", default-features = false, features = ["pre
 wasm-bindgen-test = "0.3.76"
 leptos_workers = "0.3.0"
 serde = { version = "1.0.228", features = ["derive"] }
+gloo-timers = "0.4.0"
 
 [[bin]]
 name = "basic_routing"
@@ -88,5 +89,9 @@ name = "read_from_local_sqlite"
 path = "src/sqlite/read_from/main.rs"
 
 [[bin]]
-name = "db_worker"
-path = "src/sqlite/read_from/worker.rs"
+name = "simple_worker"
+path = "src/sqlite/simple_worker/main.rs"
+
+[[bin]]
+name = "simple_async"
+path = "src/sqlite/simple_worker/simple_async.rs"

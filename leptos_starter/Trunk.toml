@@ -1,2 +1,0 @@
-[[target]]
-path = "src/sqlite/read_from/worker.rs"

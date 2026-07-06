@@ -16,6 +16,8 @@ use crate::sqlite::read_from::create_sql_statements::*;
 use anyhow::{Result, anyhow, bail};
 use std::ffi::CString; //let sql_cstr = CString::new(sql).map_err(|e| anyhow!("CString conversion failed: {}", e))?;
 
+use crate::sqlite::read_from::db_table::Table;
+
 pub async fn create_local_db_connection(filename: &str) -> Result<*mut ffi::sqlite3> {
     install_opfs_sahpool(&OpfsSAHPoolCfg::default(), true).await?;
 
@@ -82,36 +84,45 @@ pub fn export_db(db: *mut ffi::sqlite3) -> Result<()> {
         let data = ffi::sqlite3_serialize(db, c"main".as_ptr().cast(), &mut size, 0);
 
         if data.is_null() {
-            log!("Failed to serialize database");
             bail!("Failed to serialize database");
         }
 
-        // Create a slice from the raw data pointer [citation:4]
+        // Create a slice from the raw data pointer
         let bytes = std::slice::from_raw_parts(data as *const u8, size as usize);
 
         // Create a Uint8Array from the byte slice
         let uint8_array = js_sys::Uint8Array::view(bytes);
 
-        // Create the Blob from the Array [citation:6][citation:10]
-        let blob = Blob::new_with_u8_array_sequence(&js_sys::Array::of1(&uint8_array)).unwrap();
+        // Create the Blob from the Array
+        let blob = Blob::new_with_u8_array_sequence(&js_sys::Array::of1(&uint8_array))
+            .map_err(|e| anyhow!("Failed to create Blob: {:?}", e))?;
 
-        // Create object URL and trigger download [citation:6]
-        let url = Url::create_object_url_with_blob(&blob).unwrap();
-        let a: web_sys::HtmlElement = web_sys::window()
-            .unwrap()
+        // Create object URL and trigger download
+        let url = Url::create_object_url_with_blob(&blob)
+            .map_err(|e| anyhow!("Failed to create object URL: {:?}", e))?;
+
+        let window = web_sys::window().ok_or_else(|| anyhow!("No window available"))?;
+
+        let document = window
             .document()
-            .unwrap()
+            .ok_or_else(|| anyhow!("No document available"))?;
+
+        let a: web_sys::HtmlElement = document
             .create_element("a")
-            .unwrap()
+            .map_err(|e| anyhow!("Failed to create <a> element: {:?}", e))?
             .unchecked_into();
 
-        a.set_attribute("href", &url).unwrap();
-        a.set_attribute("download", "database.sqlite").unwrap();
+        a.set_attribute("href", &url)
+            .map_err(|e| anyhow!("Failed to set href: {:?}", e))?;
+
+        a.set_attribute("download", "database.sqlite")
+            .map_err(|e| anyhow!("Failed to set download: {:?}", e))?;
+
         a.click();
-        /*
-         */
-        //memory freeing stuff or whatever
+
+        // Free memory
         ffi::sqlite3_free(data as *mut std::ffi::c_void);
+
         Ok(())
     }
 }

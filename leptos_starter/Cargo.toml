@@ -32,6 +32,8 @@ sqlite-wasm-rs = { version = "0.4.5", default-features = false, features = ["pre
 
 #trying to get tests to work part 2 //this is just for tests/web.rs
 wasm-bindgen-test = "0.3.76"
+leptos_workers = "0.3.0"
+serde = { version = "1.0.228", features = ["derive"] }
 
 [[bin]]
 name = "basic_routing"
@@ -84,3 +86,7 @@ path = "src/final_example/main.rs"
 [[bin]]
 name = "read_from_local_sqlite"
 path = "src/sqlite/read_from/main.rs"
+
+[[bin]]
+name = "db_worker"
+path = "src/sqlite/read_from/worker.rs"

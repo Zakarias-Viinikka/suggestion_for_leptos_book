@@ -1,33 +1,4 @@
-#[derive(Clone)]
-pub enum ColumnType {
-    Integer,
-    Text,
-    Real, // for floating-point numbers
-    Blob, // for binary data
-}
-
-impl ColumnType {
-    fn as_str(&self) -> &'static str {
-        match self {
-            ColumnType::Integer => "INTEGER",
-            ColumnType::Text => "TEXT",
-            ColumnType::Real => "REAL",
-            ColumnType::Blob => "BLOB",
-        }
-    }
-}
-
-#[derive(Clone)]
-pub struct Column {
-    pub column_name: String,     // now public
-    pub column_type: ColumnType, // now public
-}
-
-#[derive(Clone)]
-pub struct Table {
-    pub table_name: String,   // now public
-    pub columns: Vec<Column>, // now public
-}
+use crate::sqlite::read_from::db_table::*;
 
 pub fn generate_create_table_sql(table: &Table) -> String {
     let mut cols = vec!["id INTEGER PRIMARY KEY AUTOINCREMENT".to_string()];

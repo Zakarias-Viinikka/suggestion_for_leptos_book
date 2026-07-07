@@ -5,8 +5,8 @@
         <link rel="stylesheet" href="/finale-e5515a370e61ca96.css" integrity="sha384-D09MgKyBiN1NqLRur/i0X0Ixll8Crqz1RGAE/qtTHYIvd+8402UDAalUTw/wn+xz"/>
         
 <script type="module">
-import init, * as bindings from '/calling_js_from_rust-656a3d6c41acc1ff.js';
-const wasm = await init({ module_or_path: '/calling_js_from_rust-656a3d6c41acc1ff_bg.wasm' });
+import init, * as bindings from '/background_dots-37be8dcb3aace886.js';
+const wasm = await init({ module_or_path: '/background_dots-37be8dcb3aace886_bg.wasm' });
 
 
 window.wasmBindings = bindings;
@@ -22,6 +22,13 @@ dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
 }
 </script>
         <!-- /rust_js -->
+
+        <!-- animations -->
+        <script>function set_anim_state_bounce() {}
+
+function set_anim_state_finish_bounce() {}
+</script>
+        <!-- /animations -->
 
         <!-- finale -->
         <script>/**!
@@ -3399,7 +3406,7 @@ dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
 })));
 </script>
         <!-- /finale -->
-    <link rel="modulepreload" href="/calling_js_from_rust-656a3d6c41acc1ff.js" crossorigin="anonymous" integrity="sha384-CRZb1nDZNiKvIXWSJY5pR2b7ExkpWznINw8qQ+WaTZ9BHIU18o12UsnbFWBOBqXp"><link rel="preload" href="/calling_js_from_rust-656a3d6c41acc1ff_bg.wasm" crossorigin="anonymous" integrity="sha384-zSYAHZLUS85ZP9dmpQp3J9mdTinlYpfB8Se17AJIWvtHL1L2Y/0trtc5RGwhG9o0" as="fetch" type="application/wasm"></head>
+    <link rel="modulepreload" href="/background_dots-37be8dcb3aace886.js" crossorigin="anonymous" integrity="sha384-TYNM5ockFi9pQTm0ab7capfJSUTRK3BPHuR82mAS475vb8Q6xb/2mhDWNtqzi0XD"><link rel="preload" href="/background_dots-37be8dcb3aace886_bg.wasm" crossorigin="anonymous" integrity="sha384-fe0GYbyVptDfYGRZXFjLTMqe/C0pdELvOKzb/bSKgXbSOrzWpvNTExvNIpAqjMUr" as="fetch" type="application/wasm"></head>
     <body><script>"use strict";
 
 (function () {

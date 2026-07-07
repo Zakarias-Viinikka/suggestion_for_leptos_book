@@ -21,8 +21,8 @@ fn App() -> impl IntoView {
             <p>
             {move || {
                 match db_response.get() {
-                    None => view! { "db_response" <br> "is" <br> "empty" },
-                    _ => view! {"de_response is not empty"}
+                    None => view! { "db_response" <br/> "is" <br/> "empty" }.into_any(),
+                    _ => view! {"db_response is not empty"}.into_any()
                 }
             }}
             </p>

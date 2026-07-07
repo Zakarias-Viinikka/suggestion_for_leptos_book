@@ -57,6 +57,10 @@ name = "memo"
 path = "src/signals/memo/main.rs"
 
 [[bin]]
+name = "calling_js_from_rust"
+path = "src/rust_js/calling_js_from_rust/main.rs"
+
+[[bin]]
 name = "calling_rust_from_js"
 path = "src/rust_js/rj1_calling_rust_from_js/main.rs"
 
@@ -95,3 +99,7 @@ path = "src/sqlite/simple_worker/main.rs"
 [[bin]]
 name = "simple_async"
 path = "src/sqlite/simple_worker/simple_async.rs"
+
+[[bin]]
+name = "background_dots"
+path = "src/animations/background_dots/main.rs"

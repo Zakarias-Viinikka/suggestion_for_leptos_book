@@ -42,12 +42,12 @@ fn App() -> impl IntoView {
         ],
     };
 
-    let db_response = LocalResource::new(move || {
+    /*let db_response = LocalResource::new(move || {
         let table_clone = table.clone(); // clone here, outside async block
         async move {
             worker_test(/*table_clone*/ true).await // use the clone, not the original
         }
-    });
+    });*/
     //sahpool doesn't support multiple connections which means that if the website is opened in another tab the connection fails.
     // work around is to either use 2 storages. default to sahpool and otherwise use indexeddb
     // other alternative is to more manually drop the connection if it hasn't been used in a while and try to reconnect when you need it
@@ -71,23 +71,23 @@ fn App() -> impl IntoView {
                 Some(Err(e)) => format!("Worker error: {}", e),
                 None => "Loading...".to_string(),
             } }*/
-            <p>
+            /*<p>
             {move || {
                 match db_response.get() {
                     None => view! { "db_response is empty" },
                     _ => view! {"de_response is not empty"}
                 }
             }}
-            </p>
+            </p>*/
         </p>
 
         </div>
     }
 }
 
-//cargo add leptos_workers
+/*//cargo add leptos_workers
 // cargo add serde --features derive
 #[worker(DoDbStuff)]
 pub async fn worker_test(/*table: Table*/ abc: bool) -> DbResponse {
     DbResponse::Success
-}
+}*/

@@ -17,6 +17,9 @@ fn main() {
 fn App() -> impl IntoView {
     /* the reason this doesn't work is because, as of writin leptos_workers only works for leptos versions up to 0.8 */
     //let db_response = LocalResource::new(async move || worker_test(MyRequest).await);
+    //
+    // found a resource i can check out so it's easier for me to know where to start next time
+    // https://docs.rs/gloo-worker/latest/gloo_worker/#worker-trait
     let tmp = LocalResource::new(async move || simple_ping("".to_string()).await);
     view! {
         <div class="container">

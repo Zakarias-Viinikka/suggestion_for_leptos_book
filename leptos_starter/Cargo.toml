@@ -58,11 +58,7 @@ path = "src/signals/memo/main.rs"
 
 [[bin]]
 name = "calling_js_from_rust"
-path = "src/rust_js/calling_js_from_rust/main.rs"
-
-[[bin]]
-name = "calling_rust_from_js"
-path = "src/rust_js/rj1_calling_rust_from_js/main.rs"
+path = "src/rust_js/rj1_calling_js_from_rust/main.rs"
 
 [[bin]]
 name = "js_signals"

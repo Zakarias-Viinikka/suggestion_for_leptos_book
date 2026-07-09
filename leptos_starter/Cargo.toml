@@ -99,3 +99,8 @@ path = "src/sqlite/simple_worker/simple_async.rs"
 [[bin]]
 name = "background_dots"
 path = "src/animation/background_dots/main.rs"
+
+
+[[bin]]
+name = "simple_anim"
+path = "src/animation/simple_example/main.rs"

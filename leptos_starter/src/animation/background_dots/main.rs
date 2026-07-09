@@ -1,5 +1,5 @@
 use leptos::prelude::*;
-use wasm_bindgen::prelude::*; //for importing js
+use wasm_bindgen::prelude::*;
 
 fn main() {
     console_error_panic_hook::set_once();
@@ -8,38 +8,43 @@ fn main() {
 
 #[component]
 fn App() -> impl IntoView {
+    let grid_x_size = 3;
+    let grid_y_size = 3;
+
+    let grid_x_size_copy = grid_x_size.clone() as f64;
+    let grid_y_size_copy = grid_y_size.clone() as f64;
+
+    Effect::new(move |_| {
+        start_anim(grid_x_size_copy, grid_y_size_copy);
+    });
+
     view! {
-        <div class="container">
+        <div class="grid-container">
+        {
+            let mut vec = Vec::new();
+            for y in 0..grid_y_size {
+                for x in 0..grid_x_size {
+                    vec.push(
+                        view! {
+                            <div class="grid-dot" id=create_dot_id(x, y)>
+                                "●"
+                            </div>
+                        }
+                    );
+                }
+            }
+            vec
+        }
         </div>
     }
 }
 
-//change name of the macro.
-// test it out inside of the extern thing.
-// create a setinterval or settimeout whichever one is relevant that starts a thing that does an animation
-// make it stop when "finish anim" is called.
-// finish anim should update a signal so that leptos knows "ok js finished now" but that can be saved for the later example
-macro_rules! animation_js_bindings {
-    ($($variant:ident),+ $(,)?) => {
-        $(
-            fn [<set_anim_state_ $variant:lower>](element_id: String);
-            fn [<finish_anim_state_ $variant:lower>](element_id: String);
-        )+
-    };
+fn create_dot_id(x: usize, y: usize) -> String {
+    format!("dot-{}-{}", x, y)
 }
 
+// js/animations/background_dots.js
 #[wasm_bindgen]
 extern "C" {
-    /*fn set_anim_state_bounce(String);
-    fn set_anim_state_finish_bounce(String);*/
-}
-
-enum AnimationState {
-    Bounce,
-}
-
-impl AnimationState {
-    fn set_anim_state(&self) {}
-
-    fn finish_animation(&self) {}
+    fn start_anim(grid_x_size: f64, grid_y_size: f64);
 }

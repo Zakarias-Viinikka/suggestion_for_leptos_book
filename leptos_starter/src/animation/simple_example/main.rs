@@ -1,11 +1,66 @@
-/*
-* came up with a way to do js tests that is relatively painfree and auotmated and works well with trunk:
-*
-* is there a way i can make the browser automatically download/edit a file in like /downloads.
+use leptos::prelude::*;
+use wasm_bindgen::prelude::*; //for importing js
 
-that way i could write a program that just checks that file and then gives my
-computer a popup that is like "hey ur file suggests something is wrong
-with your js tests" and then i could just have a component this is like
-<Tests /> and everytime my trunk reloads my tests would get ran
-and the file would get updated, but only when i worked on the page.
-*/
+fn main() {
+    console_error_panic_hook::set_once();
+    mount_to_body(App);
+}
+
+#[derive(Clone)]
+enum BounceState {
+    NotMoving,
+    Moving,
+}
+
+#[component]
+fn App() -> impl IntoView {
+    let (bounce_state, set_bounce_state) = signal(BounceState::NotMoving);
+    view! {
+        <div class="container">
+            <div class="box-container">
+                <div id="bounce-wrapper">
+                    <div id="box-trying-to-become-square"></div>
+                </div>
+            </div>
+            <hr/>
+            <ul>
+                <li><button on:click=move |_| {
+                    match bounce_state.get() {
+                        BounceState::NotMoving => {
+                            set_anim_state_bounce();
+                            set_bounce_state.set(BounceState::Moving);
+                        }
+                        BounceState::Moving => {
+                            set_anim_state_finish_bounce();
+                            set_bounce_state.set(BounceState::NotMoving);
+                        }
+                    }
+                }>
+                    "bounce"
+                </button></li>
+                <li><button on:click=move |_| {
+                    set_anim_state_backflip();
+                }>
+                    "backflip"
+                </button></li>
+            </ul>
+        </div>
+    }
+}
+
+#[wasm_bindgen]
+extern "C" {
+    fn set_anim_state_bounce();
+    fn set_anim_state_finish_bounce();
+    fn set_anim_state_backflip();
+}
+/*
+enum AnimationState {
+    Bounce,
+}
+
+impl AnimationState {
+    fn set_anim_state() {}
+
+    fn finish_animation() {}
+}*/

@@ -3,10 +3,20 @@
     <head>
         <link rel="stylesheet" href="/global-86ad9bc4c30ad923.css" integrity="sha384-bQc9kcBrI12AXkGwP1GrKXhujLwiAgJIpI5KyWdGdYHj8FWdS/2dS0h7d84i1Ava"/>
         <link rel="stylesheet" href="/finale-e5515a370e61ca96.css" integrity="sha384-D09MgKyBiN1NqLRur/i0X0Ixll8Crqz1RGAE/qtTHYIvd+8402UDAalUTw/wn+xz"/>
+        <!-- animation -->
+            <!-- simple anim -->
+                <link rel="stylesheet" href="/simple_anim_box-67a0c29cac13d84.css" integrity="sha384-DtwW9fY2509BSwMQJk7Hc4hxBhWhXDYhyk6NnQBIpj2Ee15RKEG6ryvxQHnP32x0"/>
+                <link rel="stylesheet" href="/backflip_animation-c91be88ae1998e50.css" <link integrity="sha384-fiLM8DL+iTPbAkqGeEDOFFAJ1bXPoFJNv9FW6AtmlenUbRX/tpx5U9PEuC42XRdF"/>
+            <!-- simple anim -->
+            <!-- background dots -->
+                <link rel="stylesheet" href="/animation_fade_out-da9daf07f89de922.css" integrity="sha384-3ozhiA4cYmu7PJBS05qstpcC8Gs+eGUNRLaGWGpxl6QlGllhOCOxHaFxItzSFUmk"/>
+                <link rel="stylesheet" href="/general_styling-48234a4e1fad10ba.css" integrity="sha384-wIATbE99amI1dohoj6emQVLKSI4T2GhQ44CuyPVp7fJNttk408jg/9XgWRFGxY3W"/>
+            <!-- background dots -->
+        <!-- animation -->
         
 <script type="module">
-import init, * as bindings from '/background_dots-37be8dcb3aace886.js';
-const wasm = await init({ module_or_path: '/background_dots-37be8dcb3aace886_bg.wasm' });
+import init, * as bindings from '/background_dots-735be9e14a3567aa.js';
+const wasm = await init({ module_or_path: '/background_dots-735be9e14a3567aa_bg.wasm' });
 
 
 window.wasmBindings = bindings;
@@ -24,9 +34,44 @@ dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
         <!-- /rust_js -->
 
         <!-- animations -->
-        <script>function set_anim_state_bounce() {}
+        <script>function set_anim_state_bounce() {
+  document.getElementById("bounce-wrapper").classList.add("slide-top");
+}
 
-function set_anim_state_finish_bounce() {}
+function set_anim_state_finish_bounce() {
+  document.getElementById("bounce-wrapper").classList.remove("slide-top");
+}
+
+function set_anim_state_backflip() {
+  const box = document.getElementById("box-trying-to-become-square");
+  box.classList.add("flip-horizontal-bottom");
+  setTimeout(() => {
+    box.classList.remove("flip-horizontal-bottom");
+  }, 400);
+}
+</script>
+        <script>let grid_x_size;
+let grid_y_size;
+
+function start_anim(x, y) {
+  grid_x_size = x;
+  grid_y_size = y;
+  setInterval(() => {
+    const randomX = Math.floor(Math.random() * grid_x_size);
+    const randomY = Math.floor(Math.random() * grid_y_size);
+    fade_animation(randomX, randomY);
+  }, 2000);
+}
+
+function fade_animation(x, y) {
+  const target = document.getElementById(`dot-${x}-${y}`);
+  if (target) {
+    target.classList.add("fade-in-out");
+    setTimeout(() => {
+      target.classList.remove("fade-in-out");
+    }, 1000);
+  }
+}
 </script>
         <!-- /animations -->
 
@@ -3406,7 +3451,7 @@ function set_anim_state_finish_bounce() {}
 })));
 </script>
         <!-- /finale -->
-    <link rel="modulepreload" href="/background_dots-37be8dcb3aace886.js" crossorigin="anonymous" integrity="sha384-TYNM5ockFi9pQTm0ab7capfJSUTRK3BPHuR82mAS475vb8Q6xb/2mhDWNtqzi0XD"><link rel="preload" href="/background_dots-37be8dcb3aace886_bg.wasm" crossorigin="anonymous" integrity="sha384-fe0GYbyVptDfYGRZXFjLTMqe/C0pdELvOKzb/bSKgXbSOrzWpvNTExvNIpAqjMUr" as="fetch" type="application/wasm"></head>
+    <link rel="modulepreload" href="/background_dots-735be9e14a3567aa.js" crossorigin="anonymous" integrity="sha384-zvXVwfUD6B0FpNlb1BDPcDbmCeFrThz4FqG9+VHy1QJyV0axhZCjUjygxFMKgJpf"><link rel="preload" href="/background_dots-735be9e14a3567aa_bg.wasm" crossorigin="anonymous" integrity="sha384-6aweieqlAHhqY7ovvqQTy5wQQwtV3QylUV4UtxuPiC/BqDCQc4cfQX1RpWYEBTjn" as="fetch" type="application/wasm"></head>
     <body><script>"use strict";
 
 (function () {

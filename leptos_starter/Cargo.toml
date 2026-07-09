@@ -35,6 +35,7 @@ wasm-bindgen-test = "0.3.76"
 leptos_workers = "0.3.0"
 serde = { version = "1.0.228", features = ["derive"] }
 gloo-timers = "0.4.0"
+gloo-worker = { version = "0.6.0", features = ["futures"] }
 
 [[bin]]
 name = "basic_routing"

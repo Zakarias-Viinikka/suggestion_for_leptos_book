@@ -1,0 +1,63 @@
+instructions for getting it to work based on the trunk github report example for gloo worker
+https://github.com/trunk-rs/trunk/blob/main/examples/webworker-gloo/Cargo.toml
+
+leave a comment or whatever on this github thing later since this was the first thing you found. incase anyone else stumbles down the same path:
+https://github.com/jin-eld/gloo-worker-example
+---
+CHECKLIST: Setting up a gloo-worker project with Trunk
+
+CARGO.TOML
+
+Add two binary targets:
+[[bin]]
+name = "app"
+path = "src/bin/app.rs"
+
+[[bin]]
+name = "worker"
+path = "src/bin/worker.rs"
+
+The worker binary name ("worker") will become the output file "worker.js".
+
+SHARED WORKER LOGIC
+
+Put your worker code (the #[oneshot] function, Worker trait impl, etc.) in lib.rs or a shared module.
+
+This code must be accessible from both binaries.
+
+WORKER BINARY (src/bin/worker.rs)
+
+Minimal main function.
+
+If using #[oneshot] or #[reactor], call: <YourType>::register();
+
+If using a manual Worker trait, the example suggests it might not need an explicit register call, but check docs for your version. To be safe, call the register method if available.
+
+APP BINARY (src/bin/app.rs)
+
+This is your main application code (Leptos, Yew, etc.).
+
+Spawn the worker using the path "./worker.js":
+
+For oneshot: let mut handle = YourWorker::spawner().spawn("./worker.js");
+
+For persistent workers with callbacks: use .callback().spawn("./worker.js")
+
+Keep the bridge alive as needed (e.g., Box::leak or store in component state).
+
+INDEX.HTML
+
+Include two link tags for Trunk:
+
+<link data-trunk rel="rust" href="Cargo.toml" data-bin="app" data-type="main" /> <link data-trunk rel="rust" href="Cargo.toml" data-bin="worker" data-type="worker" />
+data-bin values must match the binary names in Cargo.toml.
+
+data-type="worker" ensures the worker is built as a web worker, not a full page.
+
+BUILD & RUN
+
+Run: trunk serve (or trunk build)
+
+Trunk compiles both binaries, outputs everything into the dist folder.
+
+The "./worker.js" path resolves because it's in the same dist directory as the main app.

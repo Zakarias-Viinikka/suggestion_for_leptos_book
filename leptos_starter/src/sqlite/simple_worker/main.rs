@@ -19,10 +19,25 @@ fn main() {
 #[component]
 fn App() -> impl IntoView {
     // https://docs.rs/gloo-worker/latest/gloo_worker/#worker-trait
+    /*let response = LocalResource::new(move || async move {
+        let mut caller = do_work_on_different_thread::spawner().spawn("./worker.js");
+        caller.run("input".to_string()).await
+    });*/
+
     let response = LocalResource::new(move || async move {
         let mut caller = do_work_on_different_thread::spawner().spawn("./worker.js");
         caller.run("input".to_string()).await
     });
+
+    /*let work_caller = Multiplier::spawner()
+        .callback(move |_| {
+            do_work_on_different_thread
+        })
+        .spawn("./worker.js");
+    let work_caller = Box::leak(Box::new(work_caller));
+
+    work_caller.send();*/
+
     view! {
         <div class="container">
             /*<p>

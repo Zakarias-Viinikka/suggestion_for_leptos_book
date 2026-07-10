@@ -32,7 +32,6 @@ sqlite-wasm-rs = { version = "0.4.5", default-features = false, features = ["pre
 
 #trying to get tests to work part 2 //this is just for tests/web.rs
 wasm-bindgen-test = "0.3.76"
-leptos_workers = "0.3.0"
 serde = { version = "1.0.228", features = ["derive"] }
 gloo-timers = "0.4.0"
 gloo-worker = { version = "0.6.0", features = ["futures"] }
@@ -101,7 +100,11 @@ path = "src/sqlite/simple_worker/simple_async.rs"
 name = "background_dots"
 path = "src/animation/background_dots/main.rs"
 
-
 [[bin]]
 name = "simple_anim"
 path = "src/animation/simple_example/main.rs"
+
+# The worker binary name ("worker") will become the output file "worker.js".
+[[bin]]
+name = "worker"
+path = "src/sqlite/simple_worker/worker.rs"

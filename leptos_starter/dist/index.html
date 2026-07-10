@@ -5,8 +5,8 @@
         <link rel="stylesheet" href="/finale-e5515a370e61ca96.css" integrity="sha384-D09MgKyBiN1NqLRur/i0X0Ixll8Crqz1RGAE/qtTHYIvd+8402UDAalUTw/wn+xz"/>
         
 <script type="module">
-import init, * as bindings from '/worker_step_2-98517d08614e2776.js';
-const wasm = await init({ module_or_path: '/worker_step_2-98517d08614e2776_bg.wasm' });
+import init, * as bindings from '/gloo_test-ac7f76045628a650.js';
+const wasm = await init({ module_or_path: '/gloo_test-ac7f76045628a650_bg.wasm' });
 
 
 window.wasmBindings = bindings;
@@ -14,7 +14,8 @@ window.wasmBindings = bindings;
 
 dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
 
-</script>
+</script> <!-- potentially gloo-worker requires for me to add data-type main -->
+        
         <!-- animation -->
             <!-- simple anim -->
                 <link rel="stylesheet" href="/simple_anim_box-67a0c29cac13d84.css" integrity="sha384-DtwW9fY2509BSwMQJk7Hc4hxBhWhXDYhyk6NnQBIpj2Ee15RKEG6ryvxQHnP32x0"/>
@@ -3452,48 +3453,7 @@ function fade_animation(x, y) {
 })));
 </script>
         <!-- /finale -->
-
-        <!-- worker -->
-        <script>//copied from step 1 js
-function createWorker(fn) {
-  var blob = new Blob(['self.onmessage = ', fn.toString()], { type: 'text/javascript' });
-  var url = URL.createObjectURL(blob);
-
-  return new Worker(url);
-}
-
-var myWorker = createWorker(function (e) {
-  if (e.data === "worker do work") {
-    setTimeout(() => {
-      const workerResult = `Stuff worked. 'What stuff?' you may ask.`;
-      self.postMessage(workerResult);
-    }, 2000);
-  } else {
-    setTimeout(() => {
-      self.postMessage("worker don't wanna do work");
-    }, 2000);
-  }
-});
-
-function make_worker_work() {
-  myWorker.postMessage("worker do work");
-}
-
-myWorker.onmessage = (e) => {
-  console.log("javscript attempting to bend rust to their will")
-  bending_rust(e.data);
-  console.log("Worker responded with: ", e.data);
-};
-
-function bending_rust(result) {
-  const event = new CustomEvent('obey_me_rust', {
-      detail: String(result)
-  });
-  window.dispatchEvent(event);
-}
-</script>
-        <!-- /worker -->
-    <link rel="modulepreload" href="/worker_step_2-98517d08614e2776.js" crossorigin="anonymous" integrity="sha384-cBQvbcOl0HRtXSDk5qZQRTyx4BhL7399nVPN3DnavoTD7PD1CT80L1qlfvDzMLhr"><link rel="preload" href="/worker_step_2-98517d08614e2776_bg.wasm" crossorigin="anonymous" integrity="sha384-BwRmUAez5y3xLYKvhJ7jXsHaIlFsbG+AeqdsexDSQjepB7ffx0p+Id7DDfn4reXh" as="fetch" type="application/wasm"></head>
+    <link rel="modulepreload" href="/gloo_test-ac7f76045628a650.js" crossorigin="anonymous" integrity="sha384-JXOZ2wJbyg+Be09ZRmToG/NUT81D9iqEonfDG4iVjTcbOUx0G7mG/jkGuhyQwXx+"><link rel="preload" href="/gloo_test-ac7f76045628a650_bg.wasm" crossorigin="anonymous" integrity="sha384-IGNQq+8Y0sW9IFXvvLsDY+u+B1CJDdfRR/rb7FejbgfTd3t5KygzBf6E38BSnMfw" as="fetch" type="application/wasm"></head>
     <body><script>"use strict";
 
 (function () {

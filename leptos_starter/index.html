@@ -3,7 +3,8 @@
     <head>
         <link data-trunk rel="scss" href="./css/global.scss" />
         <link data-trunk rel="scss" href="./css/finale.scss" />
-        <link data-trunk rel="rust" data-bin="worker_step_2" />
+        <link data-trunk rel="rust" data-bin="gloo_test" data-type="main" /> <!-- potentially gloo-worker requires for me to add data-type main -->
+        <link data-trunk rel="rust" href="Cargo.toml" data-bin="worker" data-type="worker" />
         <!-- animation -->
             <!-- simple anim -->
                 <link
@@ -68,15 +69,6 @@
             href="./js/finale/Sortable.js"
         />
         <!-- /finale -->
-
-        <!-- worker -->
-        <link
-            data-trunk
-            rel="inline"
-            type="js"
-            href="./js/worker/step2.js"
-        />
-        <!-- /worker -->
     </head>
     <body></body>
 

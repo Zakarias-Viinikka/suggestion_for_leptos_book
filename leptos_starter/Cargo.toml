@@ -35,6 +35,10 @@ wasm-bindgen-test = "0.3.76"
 serde = { version = "1.0.228", features = ["derive"] }
 gloo-timers = "0.4.0"
 
+#gloo worker
+gloo-worker = { version = "0.6.0", features = ["futures"] }
+gloo-console = "0.3" # logging from a worker
+
 [[bin]]
 name = "basic_routing"
 path = "src/routing/r1_basic_routing/main.rs"
@@ -100,5 +104,9 @@ name = "simple_anim"
 path = "src/animation/simple_example/main.rs"
 
 [[bin]]
-name = "worker_step_2"
-path = "src/sqlite/step2_js_worker_calling_rust/main.rs"
+name = "gloo_test"
+path = "src/sqlite/gloo_worker/test1.rs"
+
+[[bin]]
+name = "worker"
+path = "src/sqlite/gloo_worker/worker.rs"

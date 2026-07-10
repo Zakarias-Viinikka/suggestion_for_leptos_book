@@ -3,9 +3,7 @@
     <head>
         <link data-trunk rel="scss" href="./css/global.scss" />
         <link data-trunk rel="scss" href="./css/finale.scss" />
-        <link data-trunk rel="rust" data-bin="simple_worker" />
-
-        <link data-trunk rel="rust" href="Cargo.toml" data-wasm-opt="z" data-bin="worker" data-type="worker" /> //js file for worker
+        <link data-trunk rel="rust" data-bin="worker_step_2" />
         <!-- animation -->
             <!-- simple anim -->
                 <link
@@ -70,6 +68,15 @@
             href="./js/finale/Sortable.js"
         />
         <!-- /finale -->
+
+        <!-- worker -->
+        <link
+            data-trunk
+            rel="inline"
+            type="js"
+            href="./js/worker/step2.js"
+        />
+        <!-- /worker -->
     </head>
     <body></body>
 

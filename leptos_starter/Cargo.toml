@@ -34,7 +34,6 @@ sqlite-wasm-rs = { version = "0.4.5", default-features = false, features = ["pre
 wasm-bindgen-test = "0.3.76"
 serde = { version = "1.0.228", features = ["derive"] }
 gloo-timers = "0.4.0"
-gloo-worker = { version = "0.6.0", features = ["futures"] }
 
 [[bin]]
 name = "basic_routing"
@@ -89,10 +88,6 @@ name = "read_from_local_sqlite"
 path = "src/sqlite/read_from/main.rs"
 
 [[bin]]
-name = "simple_worker"
-path = "src/sqlite/simple_worker/main.rs"
-
-[[bin]]
 name = "simple_async"
 path = "src/sqlite/simple_worker/simple_async.rs"
 
@@ -104,7 +99,6 @@ path = "src/animation/background_dots/main.rs"
 name = "simple_anim"
 path = "src/animation/simple_example/main.rs"
 
-# The worker binary name ("worker") will become the output file "worker.js".
 [[bin]]
-name = "worker"
-path = "src/sqlite/simple_worker/worker.rs"
+name = "worker_step_2"
+path = "src/sqlite/step2_js_worker_calling_rust/main.rs"

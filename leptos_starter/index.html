@@ -2,8 +2,7 @@
 <html>
     <head>
         <link data-trunk rel="scss" href="./css/global.scss" />
-        <link data-trunk rel="scss" href="./css/finale.scss" />
-        <link data-trunk rel="rust" data-bin="per_page_linking" data-type="main" />
+        <link data-trunk rel="rust" data-bin="finale" data-type="main" />
         <link data-trunk rel="rust" href="Cargo.toml" data-bin="worker" data-type="worker" />
         <!-- animation -->
             <!-- simple anim -->
@@ -16,6 +15,7 @@
                     data-trunk
                     rel="scss"
                     href="./css/animation/bounce_animation.scss"
+                />
                 <link
                     data-trunk
                     rel="scss"
@@ -60,21 +60,8 @@
             href="./js/animation/background_dots.js"
         />
         <!-- /animations -->
-
-        <!-- finale -->
-        <link
-            data-trunk
-            rel="inline"
-            type="js"
-            href="./js/finale/Sortable.js"
-        />
-        <!-- /finale -->
     </head>
     <body></body>
-
-    <!-- finale -->
-    <link data-trunk rel="inline" type="js" href="./js/finale/js.js" />
-    <!-- /finale -->
 
     <!-- this if or per_page_linking -->
     <link data-trunk rel="copy-dir" href="public"/>

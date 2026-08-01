@@ -1,17 +1,11 @@
 use leptos::logging::log; //logging
 use leptos::prelude::*;
-use leptos_starter::javascript_take_the_wheel;
-//use leptos_use::UseTextareaAutosizeReturn; //text area
-//use leptos_use::use_textarea_autosize; // text area
-
-//use anyhow::{Result, anyhow};
-
-//use wasm_bindgen::JsCast; //for macro?
-//use leptos::prelude::{on_cleanup, window_event_listener_untyped};
-//use wasm_bindgen::{JsCast, JsValue};
-
+use leptos_meta::*;
 use leptos_starter::final_example::js_stuff;
 use leptos_starter::final_example::js_value_parsing;
+use leptos_starter::javascript_take_the_wheel;
+
+use leptos::task::spawn_local_scoped;
 
 fn main() {
     console_error_panic_hook::set_once();
@@ -35,8 +29,9 @@ impl TextBlocks {
 
 #[component]
 fn App() -> impl IntoView {
-    let list = RwSignal::new(Vec::new());
+    provide_meta_context();
 
+    let list = RwSignal::new(Vec::new());
     //make text blocks
     list.update(|l| {
         for _ in 0..5 {
@@ -53,17 +48,35 @@ fn App() -> impl IntoView {
                     let item = v.remove(old_index);
                     v.insert(new_index, item);
                 });
-                /*for item in list.get().iter() {
-                    log!("{}", item.text.get())
-                }*/
             }
             Err(e) => log!("{}", e), //console.log error
         }
     });
     //js handle
-    view! {
-        <div class="finale-container">
 
+    //js.js should load after Sortable.js otherwise javascript gets all uppity
+    let (sortablejs_has_loaded, set_sortablejs_has_loaded) = signal(false);
+
+    // Trigger the wait loop exactly once
+    Effect::new(move |_| {
+        if !sortablejs_has_loaded.get_untracked() {
+            spawn_local_scoped(wait_for_sortable(set_sortablejs_has_loaded));
+        }
+    });
+
+    view! {
+        <Stylesheet href="/public/finale/finale.css"/>
+        <Script src="/public/finale/Sortable.js"/>
+        //insert the script once sortablejs has loaded
+        {move || {
+            if sortablejs_has_loaded.get() {
+                view! { <Script src="/public/finale/js.js"/> }.into_any()
+            } else {
+                view! { "" }.into_any()
+            }
+        }}
+
+        <div class="finale-container">
             <ul id="sortable-container">
                  <ForEnumerate
                      each=move || list.get()
@@ -76,7 +89,6 @@ fn App() -> impl IntoView {
                     />
                  </ForEnumerate>
              </ul>
-
              <div>
              "this is all of the textblocks combined:"
              <ForEnumerate
@@ -93,7 +105,6 @@ fn App() -> impl IntoView {
              </ForEnumerate>
              </div>
         </div>
-
         /*
          * https://github.com/leptos-rs/leptos/discussions/1471
          */
@@ -103,7 +114,6 @@ fn App() -> impl IntoView {
 
 #[component]
 fn TextArea(index: ReadSignal<usize>, text: RwSignal<String>) -> impl IntoView {
-    //
     view! {
         <li class="text-container" data-id={move || index.get()}>
             <div class="drag-handle">"⠿"</div>
@@ -111,7 +121,6 @@ fn TextArea(index: ReadSignal<usize>, text: RwSignal<String>) -> impl IntoView {
                 <textarea
                     id={move || index.get()}
                     class="textarea"
-                    //prop:value=content
                     on:input=move |ev| {
                         text.set(event_target_value(&ev));
                     }
@@ -119,5 +128,21 @@ fn TextArea(index: ReadSignal<usize>, text: RwSignal<String>) -> impl IntoView {
                 ></textarea>
             </div>
         </li>
+    }
+}
+
+// Function that loops until Sortable is defined, then flips the signal
+async fn wait_for_sortable(setter: WriteSignal<bool>) {
+    loop {
+        let ok = web_sys::window()
+            .and_then(|w| w.get("Sortable"))
+            .map(|_| true)
+            .unwrap_or(false);
+        if ok {
+            setter.set(true);
+            break;
+        }
+        // Wait 50ms before next check (uses gloo-timers)
+        gloo_timers::future::TimeoutFuture::new(50).await;
     }
 }

@@ -110,3 +110,7 @@ path = "src/sqlite/gloo_worker/test1.rs"
 [[bin]]
 name = "worker"
 path = "src/sqlite/gloo_worker/worker.rs"
+
+[[bin]]
+name = "per_page_linking"
+path = "src/per_page_linking/main.rs"

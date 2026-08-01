@@ -3,7 +3,7 @@
     <head>
         <link data-trunk rel="scss" href="./css/global.scss" />
         <link data-trunk rel="scss" href="./css/finale.scss" />
-        <link data-trunk rel="rust" data-bin="gloo_test" data-type="main" /> <!-- potentially gloo-worker requires for me to add data-type main -->
+        <link data-trunk rel="rust" data-bin="per_page_linking" data-type="main" />
         <link data-trunk rel="rust" href="Cargo.toml" data-bin="worker" data-type="worker" />
         <!-- animation -->
             <!-- simple anim -->
@@ -75,4 +75,7 @@
     <!-- finale -->
     <link data-trunk rel="inline" type="js" href="./js/finale/js.js" />
     <!-- /finale -->
+
+    <!-- this if or per_page_linking -->
+    <link data-trunk rel="copy-dir" href="public"/>
 </html>

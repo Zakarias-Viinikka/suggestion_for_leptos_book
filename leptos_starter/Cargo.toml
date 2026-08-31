@@ -102,3 +102,7 @@ path = "src/sort_this_later/localstorage/main.rs"
 [[bin]]
 name = "control_css"
 path = "src/sort_this_later/control_css/main.rs"
+
+[[bin]]
+name = "loop_macros"
+path = "src/sort_this_later/loop_macros/main.rs"

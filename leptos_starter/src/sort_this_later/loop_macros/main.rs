@@ -5,26 +5,26 @@ fn main() {
     mount_to_body(App);
 }
 
+#[derive(Clone)]
+struct item {
+    text: String,
+    id: usize,
+}
+
 // *** IMPORTANT
 //<For> component
 // requires struct to have id field
 // and struct needs to derive Clone
 macro_rules! for_leptos {
-    ($list:expr, $item:ident => $body:expr) => {
+    ($list:expr, $item:ident => $($body:tt)+) => {
         view! {
             <For
                 each=move || $list.get()
                 key=|$item| $item.id
-                children=move |$item| $body
+                children=move |$item| view! { $($body)+ }
             />
         }
     };
-}
-
-#[derive(Clone)]
-struct item {
-    text: String,
-    id: usize,
 }
 
 #[component]
@@ -40,18 +40,16 @@ fn App() -> impl IntoView {
     }
     view! {
         <div class="container">
-        //<For> macro usage
-        {for_leptos!(list, list_item => {
-            view! {
+            // Call site: parentheses + direct view block
+            {for_leptos!(list, item =>
                 <div>
-                    "text: " {list_item.text.clone()}
+                    "text: " {item.text.clone()}
                     <br/>
-                    "id: " {list_item.id}
+                    "id: " {item.id}
                     <br/>
                     <br/>
                 </div>
-            }
-        })}
+            )}
         </div>
     }
 }

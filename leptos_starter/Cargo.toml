@@ -27,6 +27,7 @@ web-sys = { version = "0.3.103", features = ["DragEvent", "Element", "HtmlElemen
 wasm-bindgen-test = "0.3.76"
 serde = { version = "1.0.228", features = ["derive"] }
 gloo-timers = "0.4.0"
+codee = { version = "0.3.5", features = ["json_serde"] }
 
 
 [[bin]]
@@ -93,3 +94,7 @@ path = "src/sort_this_later/show_component/main.rs"
 [[bin]]
 name = "callback"
 path = "src/sort_this_later/callback/main.rs"
+
+[[bin]]
+name = "localstorage"
+path = "src/sort_this_later/localstorage/main.rs"

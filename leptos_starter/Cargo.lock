@@ -1113,6 +1113,7 @@ name = "leptos_starter"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "codee",
  "console_error_panic_hook",
  "getrandom",
  "gloo-timers",

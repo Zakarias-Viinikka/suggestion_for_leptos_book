@@ -11,13 +11,11 @@ fn main() {
 // and struct needs to derive Clone
 macro_rules! for_leptos {
     ($list:expr, $item:ident => $body:expr) => {
-        view! {
-            <For
-                each=move || $list.get()
-                key=|$item| $item.id
-                children=move |$item| $body
-            />
-        }
+        <For
+            each=move || $list.get()
+            key=|$item| $item.id
+            children=move |$item| $body
+        />
     };
 }
 
@@ -41,7 +39,7 @@ fn App() -> impl IntoView {
     view! {
         <div class="container">
         //<For> macro usage
-        {for_leptos!(list, list_item => {
+        for_leptos!(list, list_item => {
             view! {
                 <div>
                     "text: " {list_item.text.clone()}
@@ -51,7 +49,7 @@ fn App() -> impl IntoView {
                     <br/>
                 </div>
             }
-        })}
+        })
         </div>
     }
 }

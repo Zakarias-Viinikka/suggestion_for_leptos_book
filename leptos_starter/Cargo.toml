@@ -106,3 +106,19 @@ path = "src/sort_this_later/control_css/main.rs"
 [[bin]]
 name = "loop_macros"
 path = "src/sort_this_later/loop_macros/main.rs"
+
+[[bin]]
+name = "checkbox"
+path = "src/specific_ui_elements/checkbox/main.rs"
+
+[[bin]]
+name = "oneshot"
+path = "src/effects/one_shot/main.rs"
+
+[[bin]]
+name = "on_signal_change"
+path = "src/effects/on_signal_change/main.rs"
+
+[[bin]]
+name = "on_signal_change2"
+path = "src/effects/on_signal_change_2/main.rs"

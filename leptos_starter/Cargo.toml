@@ -122,3 +122,12 @@ path = "src/effects/on_signal_change/main.rs"
 [[bin]]
 name = "on_signal_change2"
 path = "src/effects/on_signal_change_2/main.rs"
+
+
+[[bin]]
+name = "lz_lock"
+path = "src/state_flow/lz_lock/main.rs"
+
+[[bin]]
+name = "once_lock"
+path = "src/state_flow/once_lock/main.rs"

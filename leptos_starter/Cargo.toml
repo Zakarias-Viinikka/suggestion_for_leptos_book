@@ -1,133 +1,58 @@
-[package]
-name = "leptos_starter"
-version = "0.1.0"
-edition = "2024"
-# default-run = "basic_routing" instead of this edit the index.html
+[workspace]
+resolver = "3"
+members = [
+    "animation/background_dots",
+    "animation/simple_example",
+    "effects/one_shot",
+    "effects/on_signal_change",
+    "effects/on_signal_change_2",
+    "final_example",
+    "for_enumerate/basic_example",
+    "for_enumerate/list_of_reactive_components",
+    "html_elements",
+    "per_page_linking",
+    "routing/r1_basic_routing",
+    "routing/r2_folder_routing",
+    "routing/r3_routing_w_signals",
+    "routing/r4_optional_signals",
+    "rust_js/rj1_calling_js_from_rust",
+    "rust_js/rj2_js_accesses_signals",
+    "rust_js/rj3_cleaner_code",
+    "signals/memo",
+    "sort_this_later/callback",
+    "sort_this_later/control_css",
+    "sort_this_later/localstorage",
+    "sort_this_later/loop_macros",
+    "sort_this_later/show_component",
+    "specific_ui_elements/checkbox",
+    "specific_ui_elements/checkbox2",
+    "state_flow/lz_lock",
+    "state_flow/once_lock",
+    "download_as_file",
+    "download_as_file",
+    "global_files",
+    "per_page_files",
+]
 
-
-[dependencies]
+[workspace.dependencies]
 anyhow = "1.0.103"
 console_error_panic_hook = "0.1.7"
-rand = "0.10.1"
-getrandom = { version = "0.4.3", features = ["wasm_js"] } #rand wouldn't work properly without this one
+gloo-timers = "0.4.0"
 js-sys = "0.3.103"
 leptos = { version = "0.8.19", features = ["csr"] }
-
-#https://leptos-use.rs/browser/use_textarea_autosize.html
-leptos-use = { version = "0.19.0", features = ["use_textarea_autosize"] }
 leptos_meta = "0.8.6"
-
 leptos_router = "0.8.13"
+leptos-use = { version = "0.19.0", features = ["use_textarea_autosize", "storage"] }
+rand = "0.10.1"
+getrandom = { version = "0.4.3", features = ["wasm_js"] }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1"
 tw_merge = "0.1.21"
 wasm-bindgen = "0.2.126"
-#Blob and Url are for exporting sqldb as something i can download so that i can verify my db code is doing what i want it to.
-web-sys = { version = "0.3.103", features = ["DragEvent", "Element", "HtmlElement", "DomTokenList", "NodeList", "DomRect", "Blob", "Url"] }
-
-#trying to get tests to work part 2 //this is just for tests/web.rs
 wasm-bindgen-test = "0.3.76"
-serde = { version = "1.0.228", features = ["derive"] }
-gloo-timers = "0.4.0"
+web-sys = { version = "0.3.103", features = ["DragEvent", "Element", "HtmlElement", "DomTokenList", "NodeList", "DomRect", "Blob", "BlobPropertyBag", "Url", "HtmlAnchorElement", "Document", "Window"] }
 codee = { version = "0.3.5", features = ["json_serde"] }
 
-
-[[bin]]
-name = "basic_routing"
-path = "src/routing/r1_basic_routing/main.rs"
-
-[[bin]]
-name = "folder_routing"
-path = "src/routing/r2_folder_routing/main.rs"
-
-[[bin]]
-name = "routing_with_signals"
-path = "src/routing/r3_routing_w_signals/main.rs"
-
-[[bin]]
-name = "optional_signals"
-path = "src/routing/r4_optional_signals/main.rs"
-
-[[bin]]
-name = "memo"
-path = "src/signals/memo/main.rs"
-
-[[bin]]
-name = "calling_js_from_rust"
-path = "src/rust_js/rj1_calling_js_from_rust/main.rs"
-
-[[bin]]
-name = "js_signals"
-path = "src/rust_js/rj2_js_accesses_signals/main.rs"
-
-[[bin]]
-name = "clean_js"
-path = "src/rust_js/rj3_cleaner_code/main.rs"
-
-[[bin]]
-name = "enumerate_basic"
-path = "src/for_enumerate/basic_example/main.rs"
-
-[[bin]]
-name = "list_of_reactive_components"
-path = "src/for_enumerate/list_of_reactive_components/main.rs"
-
-[[bin]]
-name = "finale"
-path = "src/final_example/main.rs"
-
-
-[[bin]]
-name = "background_dots"
-path = "src/animation/background_dots/main.rs"
-
-[[bin]]
-name = "simple_anim"
-path = "src/animation/simple_example/main.rs"
-
-[[bin]]
-name = "per_page_linking"
-path = "src/per_page_linking/main.rs"
-
-[[bin]]
-name = "show_component"
-path = "src/sort_this_later/show_component/main.rs"
-
-[[bin]]
-name = "callback"
-path = "src/sort_this_later/callback/main.rs"
-
-[[bin]]
-name = "localstorage"
-path = "src/sort_this_later/localstorage/main.rs"
-
-[[bin]]
-name = "control_css"
-path = "src/sort_this_later/control_css/main.rs"
-
-[[bin]]
-name = "loop_macros"
-path = "src/sort_this_later/loop_macros/main.rs"
-
-[[bin]]
-name = "checkbox"
-path = "src/specific_ui_elements/checkbox/main.rs"
-
-[[bin]]
-name = "oneshot"
-path = "src/effects/one_shot/main.rs"
-
-[[bin]]
-name = "on_signal_change"
-path = "src/effects/on_signal_change/main.rs"
-
-[[bin]]
-name = "on_signal_change2"
-path = "src/effects/on_signal_change_2/main.rs"
-
-
-[[bin]]
-name = "lz_lock"
-path = "src/state_flow/lz_lock/main.rs"
-
-[[bin]]
-name = "once_lock"
-path = "src/state_flow/once_lock/main.rs"
+[patch.crates-io]
+server_fn_macro = { path = "vendor/server_fn_macro" }
+server_fn_macro_default = { path = "vendor/server_fn_macro_default" }

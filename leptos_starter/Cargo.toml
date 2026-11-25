@@ -31,7 +31,7 @@ members = [
     "download_as_file",
     "download_as_file",
     "global_files",
-    "per_page_files", "hotkeys",
+    "css_examples/install_css_via_component", "hotkeys",
 ]
 
 [workspace.dependencies]

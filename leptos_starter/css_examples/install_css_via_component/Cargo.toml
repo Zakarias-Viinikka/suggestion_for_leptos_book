@@ -1,5 +1,5 @@
 [package]
-name = "per_page_files"
+name = "install_css_via_component"
 version = "0.1.0"
 edition = "2024"
 

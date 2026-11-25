@@ -19,7 +19,7 @@ members = [
     "rust_js/rj2_js_accesses_signals",
     "rust_js/rj3_cleaner_code",
     "signals/memo",
-    "sort_this_later/callback",
+    "callback",
     "sort_this_later/control_css",
     "sort_this_later/localstorage",
     "sort_this_later/loop_macros",
